@@ -14,6 +14,7 @@
 		C599F8C924A341B900159307 /* SoundSpectrumView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C599F8C824A341B900159307 /* SoundSpectrumView.xib */; };
 		C599F8CC24A3515400159307 /* rain_love.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = C599F8CB24A3515400159307 /* rain_love.mp3 */; };
 		C599F8CE24A357B100159307 /* ChordPlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C599F8CD24A357B100159307 /* ChordPlayView.swift */; };
+		C599F8D024A364E700159307 /* EffectMarkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C599F8CF24A364E700159307 /* EffectMarkView.swift */; };
 		C59EEFFA249C71D7004833E4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C59EEFF9249C71D7004833E4 /* AppDelegate.swift */; };
 		C59EEFFC249C71D7004833E4 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C59EEFFB249C71D7004833E4 /* SceneDelegate.swift */; };
 		C59EEFFE249C71D7004833E4 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C59EEFFD249C71D7004833E4 /* ViewController.swift */; };
@@ -56,6 +57,7 @@
 		C599F8C824A341B900159307 /* SoundSpectrumView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SoundSpectrumView.xib; sourceTree = "<group>"; };
 		C599F8CB24A3515400159307 /* rain_love.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = rain_love.mp3; sourceTree = "<group>"; };
 		C599F8CD24A357B100159307 /* ChordPlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChordPlayView.swift; sourceTree = "<group>"; };
+		C599F8CF24A364E700159307 /* EffectMarkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EffectMarkView.swift; sourceTree = "<group>"; };
 		C59EEFF6249C71D7004833E4 /* SoundSpectrumViewDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SoundSpectrumViewDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C59EEFF9249C71D7004833E4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C59EEFFB249C71D7004833E4 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -3276,6 +3278,7 @@
 				C599F8C824A341B900159307 /* SoundSpectrumView.xib */,
 				C53797FC249CA67F00AE50E4 /* SoundWaveView.swift */,
 				C599F8CD24A357B100159307 /* ChordPlayView.swift */,
+				C599F8CF24A364E700159307 /* EffectMarkView.swift */,
 			);
 			path = SoundSpectrumView;
 			sourceTree = "<group>";
@@ -6760,6 +6763,7 @@
 				C53797FD249CA67F00AE50E4 /* SoundWaveView.swift in Sources */,
 				C53797FB249CA60D00AE50E4 /* SoundSpectrumView.swift in Sources */,
 				C59EEFFA249C71D7004833E4 /* AppDelegate.swift in Sources */,
+				C599F8D024A364E700159307 /* EffectMarkView.swift in Sources */,
 				C59EEFFC249C71D7004833E4 /* SceneDelegate.swift in Sources */,
 				C599F8CE24A357B100159307 /* ChordPlayView.swift in Sources */,
 			);
