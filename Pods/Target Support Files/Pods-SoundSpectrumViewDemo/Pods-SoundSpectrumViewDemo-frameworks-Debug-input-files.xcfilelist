@@ -1,0 +1,4 @@
+${PODS_ROOT}/Target Support Files/Pods-SoundSpectrumViewDemo/Pods-SoundSpectrumViewDemo-frameworks.sh
+${BUILT_PRODUCTS_DIR}/DSWaveformImage/DSWaveformImage.framework
+${BUILT_PRODUCTS_DIR}/EZAudio/EZAudio.framework
+${BUILT_PRODUCTS_DIR}/TPCircularBuffer/TPCircularBuffer.framework

@@ -1,0 +1,6 @@
+framework module Pods_SoundSpectrumViewDemo_SoundSpectrumViewDemoUITests {
+  umbrella header "Pods-SoundSpectrumViewDemo-SoundSpectrumViewDemoUITests-umbrella.h"
+
+  export *
+  module * { export * }
+}

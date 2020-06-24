@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14868" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14824"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="SoundSpectrumView" customModule="SoundSpectrumViewDemo" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="100"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hBD-d8-9bY">
+                    <rect key="frame" x="0.0" y="0.0" width="414" height="100"/>
+                </scrollView>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="hBD-d8-9bY" secondAttribute="bottom" id="7jw-ws-QEg"/>
+                <constraint firstItem="hBD-d8-9bY" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="IWk-cr-qJS"/>
+                <constraint firstItem="hBD-d8-9bY" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="g1t-SB-Cii"/>
+                <constraint firstItem="hBD-d8-9bY" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="qM6-Bg-dVO"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="hBD-d8-9bY" secondAttribute="trailing" id="tem-dz-12k"/>
+                <constraint firstItem="hBD-d8-9bY" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="tpv-dO-l91"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <connections>
+                <outlet property="scrollView" destination="hBD-d8-9bY" id="Bj5-Le-N4S"/>
+            </connections>
+            <point key="canvasLocation" x="132" y="153"/>
+        </view>
+    </objects>
+</document>

@@ -1,0 +1,28 @@
+PODS:
+  - DSWaveformImage (6.1.1)
+  - EZAudio (1.1.5):
+    - EZAudio/Full (= 1.1.5)
+  - EZAudio/Core (1.1.5)
+  - EZAudio/Full (1.1.5):
+    - EZAudio/Core
+    - TPCircularBuffer (= 1.1)
+  - TPCircularBuffer (1.1)
+
+DEPENDENCIES:
+  - DSWaveformImage
+  - EZAudio
+
+SPEC REPOS:
+  trunk:
+    - DSWaveformImage
+    - EZAudio
+    - TPCircularBuffer
+
+SPEC CHECKSUMS:
+  DSWaveformImage: 3c718a0cf99291887ee70d1d0c18d80101d3d9ce
+  EZAudio: 3b1cb4b6d7ebca68f0c2478576d75940aad4aa99
+  TPCircularBuffer: 4960a919e667280f7f38963d771f45871b64fe62
+
+PODFILE CHECKSUM: 4420d9e40356be592604ccbc39c46b79f3b6ddb5
+
+COCOAPODS: 1.8.4
