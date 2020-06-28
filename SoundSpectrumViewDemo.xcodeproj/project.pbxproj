@@ -11,10 +11,12 @@
 		9D874BA9E1F651FF8894874F /* Pods_SoundSpectrumViewDemoTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 345E656DFF7B138D1DA7B81C /* Pods_SoundSpectrumViewDemoTests.framework */; };
 		C53797FB249CA60D00AE50E4 /* SoundSpectrumView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C53797FA249CA60D00AE50E4 /* SoundSpectrumView.swift */; };
 		C53797FD249CA67F00AE50E4 /* SoundWaveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C53797FC249CA67F00AE50E4 /* SoundWaveView.swift */; };
+		C554C25624A4650300323A8E /* SoundEffectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C554C25524A4650300323A8E /* SoundEffectView.swift */; };
+		C554C25924A468AA00323A8E /* EffectMarkItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C554C25824A468AA00323A8E /* EffectMarkItemView.swift */; };
+		C554C25B24A468BF00323A8E /* EffectMarkItemView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C554C25A24A468BF00323A8E /* EffectMarkItemView.xib */; };
 		C599F8C924A341B900159307 /* SoundSpectrumView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C599F8C824A341B900159307 /* SoundSpectrumView.xib */; };
 		C599F8CC24A3515400159307 /* rain_love.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = C599F8CB24A3515400159307 /* rain_love.mp3 */; };
 		C599F8CE24A357B100159307 /* ChordPlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C599F8CD24A357B100159307 /* ChordPlayView.swift */; };
-		C599F8D024A364E700159307 /* EffectMarkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C599F8CF24A364E700159307 /* EffectMarkView.swift */; };
 		C59EEFFA249C71D7004833E4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C59EEFF9249C71D7004833E4 /* AppDelegate.swift */; };
 		C59EEFFC249C71D7004833E4 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C59EEFFB249C71D7004833E4 /* SceneDelegate.swift */; };
 		C59EEFFE249C71D7004833E4 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C59EEFFD249C71D7004833E4 /* ViewController.swift */; };
@@ -54,10 +56,12 @@
 		BDD025AC7061C605B528B1B5 /* Pods-SoundSpectrumViewDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SoundSpectrumViewDemo.debug.xcconfig"; path = "Target Support Files/Pods-SoundSpectrumViewDemo/Pods-SoundSpectrumViewDemo.debug.xcconfig"; sourceTree = "<group>"; };
 		C53797FA249CA60D00AE50E4 /* SoundSpectrumView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundSpectrumView.swift; sourceTree = "<group>"; };
 		C53797FC249CA67F00AE50E4 /* SoundWaveView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundWaveView.swift; sourceTree = "<group>"; };
+		C554C25524A4650300323A8E /* SoundEffectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundEffectView.swift; sourceTree = "<group>"; };
+		C554C25824A468AA00323A8E /* EffectMarkItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EffectMarkItemView.swift; sourceTree = "<group>"; };
+		C554C25A24A468BF00323A8E /* EffectMarkItemView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EffectMarkItemView.xib; sourceTree = "<group>"; };
 		C599F8C824A341B900159307 /* SoundSpectrumView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SoundSpectrumView.xib; sourceTree = "<group>"; };
 		C599F8CB24A3515400159307 /* rain_love.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = rain_love.mp3; sourceTree = "<group>"; };
 		C599F8CD24A357B100159307 /* ChordPlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChordPlayView.swift; sourceTree = "<group>"; };
-		C599F8CF24A364E700159307 /* EffectMarkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EffectMarkView.swift; sourceTree = "<group>"; };
 		C59EEFF6249C71D7004833E4 /* SoundSpectrumViewDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SoundSpectrumViewDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C59EEFF9249C71D7004833E4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C59EEFFB249C71D7004833E4 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -3273,14 +3277,24 @@
 		C53797F9249CA5C000AE50E4 /* SoundSpectrumView */ = {
 			isa = PBXGroup;
 			children = (
+				C554C25724A4673100323A8E /* Item */,
 				C599F8CA24A34F6A00159307 /* Resource */,
 				C53797FA249CA60D00AE50E4 /* SoundSpectrumView.swift */,
 				C599F8C824A341B900159307 /* SoundSpectrumView.xib */,
 				C53797FC249CA67F00AE50E4 /* SoundWaveView.swift */,
 				C599F8CD24A357B100159307 /* ChordPlayView.swift */,
-				C599F8CF24A364E700159307 /* EffectMarkView.swift */,
+				C554C25524A4650300323A8E /* SoundEffectView.swift */,
 			);
 			path = SoundSpectrumView;
+			sourceTree = "<group>";
+		};
+		C554C25724A4673100323A8E /* Item */ = {
+			isa = PBXGroup;
+			children = (
+				C554C25824A468AA00323A8E /* EffectMarkItemView.swift */,
+				C554C25A24A468BF00323A8E /* EffectMarkItemView.xib */,
+			);
+			path = Item;
 			sourceTree = "<group>";
 		};
 		C599F8CA24A34F6A00159307 /* Resource */ = {
@@ -6628,6 +6642,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C59EF006249C71DB004833E4 /* LaunchScreen.storyboard in Resources */,
+				C554C25B24A468BF00323A8E /* EffectMarkItemView.xib in Resources */,
 				C599F8CC24A3515400159307 /* rain_love.mp3 in Resources */,
 				C599F8C924A341B900159307 /* SoundSpectrumView.xib in Resources */,
 				C59EF003249C71DB004833E4 /* Assets.xcassets in Resources */,
@@ -6759,11 +6774,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C554C25624A4650300323A8E /* SoundEffectView.swift in Sources */,
 				C59EEFFE249C71D7004833E4 /* ViewController.swift in Sources */,
 				C53797FD249CA67F00AE50E4 /* SoundWaveView.swift in Sources */,
 				C53797FB249CA60D00AE50E4 /* SoundSpectrumView.swift in Sources */,
 				C59EEFFA249C71D7004833E4 /* AppDelegate.swift in Sources */,
-				C599F8D024A364E700159307 /* EffectMarkView.swift in Sources */,
+				C554C25924A468AA00323A8E /* EffectMarkItemView.swift in Sources */,
 				C59EEFFC249C71D7004833E4 /* SceneDelegate.swift in Sources */,
 				C599F8CE24A357B100159307 /* ChordPlayView.swift in Sources */,
 			);
