@@ -36,7 +36,7 @@ class SoundSpectrumView: UIImageView {
         self.scrollView.showsHorizontalScrollIndicator = false
         self.scrollView.contentSize = self.scrollContentSize()
         let edgeOffset: CGFloat = cursorLeftOffset
-        self.scrollView.contentInset = UIEdgeInsets(top: 0, left: edgeOffset, bottom: 0, right: self.bounds.width-edgeOffset)
+        self.scrollView.contentInset = UIEdgeInsets(top: 0, left: edgeOffset, bottom: 0, right: UIScreen.main.bounds.width-edgeOffset)
     }
     
     private func initViews() {
@@ -107,5 +107,21 @@ class SoundSpectrumView: UIImageView {
     
     private func scrollContentSize() -> CGSize {
         return CGSize(width: self.maxScrollWidth(), height: self.bounds.height)
+    }
+    
+    /// 清空marks
+    public func clearAllMarks() {
+        for item in self.scrollView.subviews {
+            if item.isKind(of: SoundEffectView.self) {
+                item.removeFromSuperview()
+                return
+            }
+        }
+    }
+    
+    public func updateProgress(second: Double) {
+        let cpro = second/self.audionDuration
+        let leftOffset = CGFloat(cpro)*self.maxScrollWidth()
+        self.scrollView.setContentOffset(CGPoint(x: leftOffset, y: 0), animated: true)
     }
 }

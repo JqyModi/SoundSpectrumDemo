@@ -45,6 +45,12 @@ class EffectMarkItemView: UIView {
                                darkpurple,
                                darkred]
         
+        self.backgroundColor = .clear
+        
+        head.layer.cornerRadius = 3
+        head.layer.masksToBounds = true
+        tail.layer.cornerRadius = 3
+        tail.layer.masksToBounds = true
     }
     
     public func setupColor(lineIndex: Int) {
