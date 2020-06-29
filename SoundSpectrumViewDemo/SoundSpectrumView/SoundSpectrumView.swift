@@ -15,7 +15,7 @@ public func randomCGFloatNumber(lower: CGFloat = 0,upper: CGFloat = 1) -> CGFloa
     return CGFloat(Float(arc4random()) / Float(UInt32.max)) * (upper - lower) + lower
 }
 
-class SoundSpectrumView: UIImageView {
+class SoundSpectrumView: UIView {
     
     private let widthPerSecond: CGFloat = 50
     private let audionDuration: TimeInterval = 33
@@ -23,6 +23,7 @@ class SoundSpectrumView: UIImageView {
     
     @IBOutlet weak var scrollView: UIScrollView!
     
+    private var effectView: SoundEffectView?
     private var cursorView: UIView?
     
     override func awakeFromNib() {
@@ -32,6 +33,7 @@ class SoundSpectrumView: UIImageView {
     }
     
     private func setupScrollView() {
+        self.scrollView.backgroundColor = .clear
         self.scrollView.showsVerticalScrollIndicator = false
         self.scrollView.showsHorizontalScrollIndicator = false
         self.scrollView.contentSize = self.scrollContentSize()
@@ -40,6 +42,7 @@ class SoundSpectrumView: UIImageView {
     }
     
     private func initViews() {
+        self.backgroundColor = .black
         
         let frame = CGRect(origin: .zero, size: self.scrollContentSize())
         
@@ -54,8 +57,9 @@ class SoundSpectrumView: UIImageView {
         
         // effects
         let randomMarkCount = 100
-        let sev = SoundEffectView(frame: frame, lineXs: self.randomChordPlayX(randomMax: randomMarkCount), lineWs: self.randomEffectMarkWidth(randomMax: randomMarkCount), lineIdxs: self.randomLineIndex(randomMax: randomMarkCount))
+        let sev = SoundEffectView(frame: frame, lineXs: [], lineWs: [], lineIdxs: [])
         self.scrollView.addSubview(sev)
+        self.effectView = sev
         
         // cursorView
         let cursor = UIView(frame: CGRect(x: self.cursorLeftOffset, y: 0, width: 1, height: self.bounds.height))
@@ -113,7 +117,9 @@ class SoundSpectrumView: UIImageView {
     public func clearAllMarks() {
         for item in self.scrollView.subviews {
             if item.isKind(of: SoundEffectView.self) {
-                item.removeFromSuperview()
+                item.subviews.forEach { (subView) in
+                    subView.removeFromSuperview()
+                }
                 return
             }
         }
@@ -122,6 +128,23 @@ class SoundSpectrumView: UIImageView {
     public func updateProgress(second: Double) {
         let cpro = second/self.audionDuration
         let leftOffset = CGFloat(cpro)*self.maxScrollWidth()
-        self.scrollView.setContentOffset(CGPoint(x: leftOffset, y: 0), animated: true)
+//        self.scrollView.setContentOffset(CGPoint(x: leftOffset, y: 0), animated: false)
+        if leftOffset.isEqual(to: 0) {
+            self.scrollView.contentOffset.x = 0
+        }else {
+            DispatchQueue.main.async {
+                UIView.animate(withDuration: 1, delay: 0, options: UIView.AnimationOptions.curveLinear, animations: {
+                        self.scrollView.contentOffset.x = leftOffset
+                }, completion: nil)
+            }
+        }
+        
+        self.randomEffectMark(frameX: leftOffset)
+    }
+    
+    public func randomEffectMark(frameX: CGFloat) {
+        let w = self.randomEffectMarkWidth().randomElement() ?? 0
+        let line = self.randomLineIndex().randomElement() ?? 0
+        self.effectView?.randomMark(frameX: frameX, frameWidth: w, lineIndex: line, animate: true)
     }
 }

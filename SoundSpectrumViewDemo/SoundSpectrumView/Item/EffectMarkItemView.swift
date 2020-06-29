@@ -62,5 +62,13 @@ class EffectMarkItemView: UIView {
         self.head.backgroundColor = hc
         self.tail.backgroundColor = tc
     }
+    
+    public func setTailColor(color: UIColor) {
+        self.tail.backgroundColor = color
+    }
+    
+    public func setHeadColor(color: UIColor) {
+        self.head.backgroundColor = color
+    }
 
 }

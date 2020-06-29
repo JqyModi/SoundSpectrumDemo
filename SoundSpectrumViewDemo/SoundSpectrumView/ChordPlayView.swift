@@ -28,7 +28,8 @@ class ChordPlayView: UIView {
     }
     
     private func initViews() {
-        self.backgroundColor = self.cpBackgroundColor
+//        self.backgroundColor = self.cpBackgroundColor
+        self.backgroundColor = nil
         for item in self.lineXs {
             self.drawVerticalLine(lineFrameX: item)
         }

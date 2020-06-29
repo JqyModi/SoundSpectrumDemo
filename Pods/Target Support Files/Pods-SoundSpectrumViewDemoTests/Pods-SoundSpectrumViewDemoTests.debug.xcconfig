@@ -1,7 +1,7 @@
-FRAMEWORK_SEARCH_PATHS = $(inherited) "${PODS_CONFIGURATION_BUILD_DIR}/DSWaveformImage" "${PODS_CONFIGURATION_BUILD_DIR}/EZAudio" "${PODS_CONFIGURATION_BUILD_DIR}/TPCircularBuffer"
+FRAMEWORK_SEARCH_PATHS = $(inherited) "${PODS_CONFIGURATION_BUILD_DIR}/DSWaveformImage" "${PODS_CONFIGURATION_BUILD_DIR}/JXSegmentedView"
 GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1
-HEADER_SEARCH_PATHS = $(inherited) "${PODS_CONFIGURATION_BUILD_DIR}/DSWaveformImage/DSWaveformImage.framework/Headers" "${PODS_CONFIGURATION_BUILD_DIR}/EZAudio/EZAudio.framework/Headers" "${PODS_CONFIGURATION_BUILD_DIR}/TPCircularBuffer/TPCircularBuffer.framework/Headers"
-OTHER_LDFLAGS = $(inherited) -framework "AVFoundation" -framework "Accelerate" -framework "AudioToolbox" -framework "DSWaveformImage" -framework "EZAudio" -framework "GLKit" -framework "TPCircularBuffer"
+HEADER_SEARCH_PATHS = $(inherited) "${PODS_CONFIGURATION_BUILD_DIR}/DSWaveformImage/DSWaveformImage.framework/Headers" "${PODS_CONFIGURATION_BUILD_DIR}/JXSegmentedView/JXSegmentedView.framework/Headers"
+OTHER_LDFLAGS = $(inherited) -framework "AVFoundation" -framework "DSWaveformImage" -framework "JXSegmentedView" -framework "UIKit"
 PODS_BUILD_DIR = ${BUILD_DIR}
 PODS_CONFIGURATION_BUILD_DIR = ${PODS_BUILD_DIR}/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)
 PODS_PODFILE_DIR_PATH = ${SRCROOT}/.

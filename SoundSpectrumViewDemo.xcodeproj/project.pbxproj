@@ -17,6 +17,9 @@
 		C599F8C924A341B900159307 /* SoundSpectrumView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C599F8C824A341B900159307 /* SoundSpectrumView.xib */; };
 		C599F8CC24A3515400159307 /* rain_love.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = C599F8CB24A3515400159307 /* rain_love.mp3 */; };
 		C599F8CE24A357B100159307 /* ChordPlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C599F8CD24A357B100159307 /* ChordPlayView.swift */; };
+		C599F8D324A9C21300159307 /* PlaySoundKeyboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C599F8D224A9C21300159307 /* PlaySoundKeyboardView.swift */; };
+		C599F8DB24A9DC3E00159307 /* PlaySoundKeyboardItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C599F8D924A9DC3E00159307 /* PlaySoundKeyboardItemView.swift */; };
+		C599F8DC24A9DC3E00159307 /* PlaySoundKeyboardItemView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C599F8DA24A9DC3E00159307 /* PlaySoundKeyboardItemView.xib */; };
 		C59EEFFA249C71D7004833E4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C59EEFF9249C71D7004833E4 /* AppDelegate.swift */; };
 		C59EEFFC249C71D7004833E4 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C59EEFFB249C71D7004833E4 /* SceneDelegate.swift */; };
 		C59EEFFE249C71D7004833E4 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C59EEFFD249C71D7004833E4 /* ViewController.swift */; };
@@ -62,6 +65,9 @@
 		C599F8C824A341B900159307 /* SoundSpectrumView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SoundSpectrumView.xib; sourceTree = "<group>"; };
 		C599F8CB24A3515400159307 /* rain_love.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = rain_love.mp3; sourceTree = "<group>"; };
 		C599F8CD24A357B100159307 /* ChordPlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChordPlayView.swift; sourceTree = "<group>"; };
+		C599F8D224A9C21300159307 /* PlaySoundKeyboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaySoundKeyboardView.swift; sourceTree = "<group>"; };
+		C599F8D924A9DC3E00159307 /* PlaySoundKeyboardItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaySoundKeyboardItemView.swift; sourceTree = "<group>"; };
+		C599F8DA24A9DC3E00159307 /* PlaySoundKeyboardItemView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PlaySoundKeyboardItemView.xib; sourceTree = "<group>"; };
 		C59EEFF6249C71D7004833E4 /* SoundSpectrumViewDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SoundSpectrumViewDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C59EEFF9249C71D7004833E4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C59EEFFB249C71D7004833E4 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -3305,6 +3311,24 @@
 			path = Resource;
 			sourceTree = "<group>";
 		};
+		C599F8D124A9C1D800159307 /* PlaySoundKeyboardView */ = {
+			isa = PBXGroup;
+			children = (
+				C599F8D424A9C92700159307 /* PlaySoundKeyboardItemView */,
+				C599F8D224A9C21300159307 /* PlaySoundKeyboardView.swift */,
+			);
+			path = PlaySoundKeyboardView;
+			sourceTree = "<group>";
+		};
+		C599F8D424A9C92700159307 /* PlaySoundKeyboardItemView */ = {
+			isa = PBXGroup;
+			children = (
+				C599F8D924A9DC3E00159307 /* PlaySoundKeyboardItemView.swift */,
+				C599F8DA24A9DC3E00159307 /* PlaySoundKeyboardItemView.xib */,
+			);
+			path = PlaySoundKeyboardItemView;
+			sourceTree = "<group>";
+		};
 		C59EEFED249C71D7004833E4 = {
 			isa = PBXGroup;
 			children = (
@@ -3330,6 +3354,7 @@
 		C59EEFF8249C71D7004833E4 /* SoundSpectrumViewDemo */ = {
 			isa = PBXGroup;
 			children = (
+				C599F8D124A9C1D800159307 /* PlaySoundKeyboardView */,
 				C53797F9249CA5C000AE50E4 /* SoundSpectrumView */,
 				C59EF02A249C7211004833E4 /* Headers */,
 				C59EEFF9249C71D7004833E4 /* AppDelegate.swift */,
@@ -6641,6 +6666,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C599F8DC24A9DC3E00159307 /* PlaySoundKeyboardItemView.xib in Resources */,
 				C59EF006249C71DB004833E4 /* LaunchScreen.storyboard in Resources */,
 				C554C25B24A468BF00323A8E /* EffectMarkItemView.xib in Resources */,
 				C599F8CC24A3515400159307 /* rain_love.mp3 in Resources */,
@@ -6774,6 +6800,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C599F8DB24A9DC3E00159307 /* PlaySoundKeyboardItemView.swift in Sources */,
+				C599F8D324A9C21300159307 /* PlaySoundKeyboardView.swift in Sources */,
 				C554C25624A4650300323A8E /* SoundEffectView.swift in Sources */,
 				C59EEFFE249C71D7004833E4 /* ViewController.swift in Sources */,
 				C53797FD249CA67F00AE50E4 /* SoundWaveView.swift in Sources */,

@@ -21,13 +21,18 @@ class SoundWaveView: UIImageView {
     }
     
     private func initWavefrom(audioURL: URL) {
+        self.backgroundColor = nil
+        
         let waveformImageDrawer = WaveformImageDrawer()
 
         // always uses background thread rendering
         waveformImageDrawer.waveformImage(fromAudioAt: audioURL,
                                           size: bounds.size,
+                                          color: .lightGray,
                                           style: .striped,
-                                          position: .middle) { image in
+                                          position: .middle,
+                                          scale: 1,
+                                          paddingFactor: 10) { image in
             // need to jump back to main queue
             DispatchQueue.main.async {
                 self.image = image
