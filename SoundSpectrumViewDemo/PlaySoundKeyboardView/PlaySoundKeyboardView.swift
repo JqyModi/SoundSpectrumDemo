@@ -17,13 +17,15 @@ class PlaySoundKeyboardView: UIView {
     private let itemHeight: CGFloat = 82.5
     private let itemOffset: CGFloat = 5
     
-    private let totalLine: Int = 3
+    private let totalRow: Int = 3
     private let totalColumn: Int = 4
 
     private var segmentedView: JXSegmentedView!
     private var segmentedDataSource: JXSegmentedTitleDataSource!
     
     private var scrollView: UIScrollView!
+    private var contentView: UIView!
+    private var scrollPage: Int = 0
     
     private var titles: [String] = []
     
@@ -71,11 +73,16 @@ class PlaySoundKeyboardView: UIView {
         self.addSubview(scrollView)
         scrollView.backgroundColor = .lightText
         self.scrollView = scrollView
+        let contentView = UIView(frame: CGRect(x: 0, y: 48, width: self.bounds.width*3, height: (self.bounds.height-48)*3))
+        self.scrollView.addSubview(contentView)
+        self.contentView = contentView
+        self.scrollView.contentSize = self.contentView.frame.size
+        self.scrollView.isPagingEnabled = true
     }
     
     private func itemPositions() -> [Int] {
         var positions = [Int]()
-        for index in 1...25 {
+        for index in 0...25 {
             positions.append(index)
         }
         return positions
@@ -84,29 +91,44 @@ class PlaySoundKeyboardView: UIView {
     private func initItemList(positions: [Int], isAutoFullEmpty: Bool = false) {
         for item in positions {
             let frame = self.positionToFrame(position: item)
-            self.drawItem(frame: frame)
+            self.drawItem(frame: frame, position: item)
         }
     }
     
-    private func drawItem(frame: CGRect) {
+    private func drawItem(frame: CGRect, position: Int) {
         let view = UINib(nibName: String(describing: PlaySoundKeyboardItemView.classForCoder()), bundle: nil).instantiate(withOwner: nil, options: nil).last as! PlaySoundKeyboardItemView
         let color = UIColor(red: randomCGFloatNumber(lower: 0, upper: 1), green: randomCGFloatNumber(lower: 0, upper: 1), blue: randomCGFloatNumber(lower: 0, upper: 1), alpha: randomCGFloatNumber(lower: 0.5, upper: 1))
         view.bgView.backgroundColor = color
-        self.scrollView.addSubview(view)
+        view.frame = frame
+        view.titleLabel.text = "\(position)"
+        self.contentView.addSubview(view)
     }
     
     private func positionToFrame(position: Int) -> CGRect {
-        let lineIdx = position/self.totalLine
-        let columnIdx = position%self.totalColumn
-        let flineIdx = CGFloat(lineIdx)
-        let widths = flineIdx*self.itemWidth
-        let hoffsets = (flineIdx-1)*self.itemOffset
-        let x = self.sectionLeftOffset + widths + hoffsets
+        
+        if position > 0, position % (3*4) == 0 {
+            self.scrollPage += 1
+        }
+        
+        print("page = \(self.scrollPage)")
+        
+        let rowIdx = (position)%self.totalColumn
+        let columnIdx = (position)/self.totalColumn
+        
+        print("rowIdx = \(rowIdx), columnIdx = \(columnIdx)")
+        
+        let fRowIdx = CGFloat(rowIdx)
+        let widths = fRowIdx*self.itemWidth
+        let hoffsets = (fRowIdx-1)*self.itemOffset
+        var x = self.sectionLeftOffset + widths + hoffsets
+        
         let fcolumnIdx = CGFloat(columnIdx)
         let heights = fcolumnIdx*self.itemHeight
         let voffsets = (fcolumnIdx-1)*itemOffset
-        let y = self.sectionTopOffset + heights + voffsets
+        var y = self.sectionTopOffset + heights + voffsets
+        
         let frame = CGRect(x: x, y: y, width: self.itemWidth, height: self.itemHeight)
+        print("position = \(position) \n frame = \(frame.debugDescription)")
         return frame
     }
 
