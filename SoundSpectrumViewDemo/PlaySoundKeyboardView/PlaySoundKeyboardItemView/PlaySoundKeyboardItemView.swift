@@ -17,6 +17,8 @@ class PlaySoundKeyboardItemView: UICollectionViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+        self.layer.cornerRadius = 8
+        self.layer.masksToBounds = true
     }
 
 }
