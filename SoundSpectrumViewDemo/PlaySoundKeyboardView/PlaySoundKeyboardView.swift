@@ -8,8 +8,17 @@
 
 import UIKit
 import JXSegmentedView
+import AVFoundation
+
+protocol PlaySoundKeyboardViewDelegate: class {
+    func playSoundKeyboardView(view: PlaySoundKeyboardView, itemDidSelected index: Int)
+}
 
 class PlaySoundKeyboardView: UIView {
+    
+    public class KeyboardTapGestureRecognizer: UITapGestureRecognizer {
+        var itemIndex: Int = 0
+    }
     
     public enum KBScrollDirection {
         case Horizontal, Vertical
@@ -25,6 +34,8 @@ class PlaySoundKeyboardView: UIView {
     private let totalColumn: Int = 4
     
     private var direction: KBScrollDirection = .Vertical
+    
+    public weak var delegate: PlaySoundKeyboardViewDelegate?
 
     private var segmentedView: JXSegmentedView!
     private var segmentedDataSource: JXSegmentedTitleDataSource!
@@ -35,14 +46,32 @@ class PlaySoundKeyboardView: UIView {
     private var pageSegmentedView: JXSegmentedView!
     private var pageSegmentedDataSource: JXSegmentedTitleDataSource!
     
-    private var titles: [String] = []
+    private var segmentTitles: [String] = []
     
     private var itemPos: [Int] = []
     private var itemTitles: [String] = []
     
-    init(frame: CGRect, titles: [String]) {
+    private var soundRes = [String]()
+    private var player: AVAudioPlayer!
+    
+    public var model: PlaySoundKeyboardViewModel! {
+        didSet {
+            guard model != nil else {
+                return
+            }
+            self.segmentTitles = model.segmentTitles
+            self.itemPos = model.playsoundVms.map({ (vm) -> Int in
+                return vm.index
+            })
+            self.itemTitles = model.playsoundVms.map({ (vm) -> String in
+                return vm.titleText
+            })
+            self.reloadData()
+        }
+    }
+    
+    override init(frame: CGRect) {
         super.init(frame: frame)
-        self.titles = titles
         self.initParams()
         self.initViews()
         self.initDatas()
@@ -78,6 +107,17 @@ class PlaySoundKeyboardView: UIView {
         self.setupPageSegmentTitles()
         
         self.scrollView.contentSize = self.scrollContentSize()
+        
+        self.soundRes = self.soundResNames()
+    }
+    
+    /// 本地音频文件
+    private func soundResNames() -> [String] {
+        var names = [String]()
+        for idx in 1...96 {
+            names.append("Piano\(idx).mp3")
+        }
+        return names
     }
     
     private func initSegmentView() {
@@ -90,7 +130,7 @@ class PlaySoundKeyboardView: UIView {
         //segmentedDataSource一定要通过属性强持有，不然会被释放掉
         segmentedDataSource = JXSegmentedTitleDataSource()
         //配置数据源相关配置属性
-        segmentedDataSource.titles = self.titles
+        segmentedDataSource.titles = self.segmentTitles
         segmentedDataSource.isTitleColorGradientEnabled = true
         //关联dataSource
         segmentedView.dataSource = self.segmentedDataSource
@@ -124,6 +164,12 @@ class PlaySoundKeyboardView: UIView {
         pageSegmentedView.indicators = [indicator]
     }
     
+    private func setupSegmentTitles() {
+        self.segmentedDataSource.titles = self.segmentTitles
+        self.segmentedDataSource.reloadData(selectedIndex: 0)
+        self.segmentedView.reloadData()
+    }
+    
     private func initScrollView() {
         let scrollView = UIScrollView(frame: CGRect(x: 0, y: 48, width: self.bounds.width, height: self.bounds.height-48))
         self.addSubview(scrollView)
@@ -154,7 +200,7 @@ class PlaySoundKeyboardView: UIView {
             }else if self.direction == .Horizontal{
                 frame = self.positionToFrame(position: item)
             }
-            self.drawItem(frame: frame, title: "\(item)")
+            self.drawItem(frame: frame, title: "\(item)", position: item)
         }
     }
     
@@ -166,17 +212,34 @@ class PlaySoundKeyboardView: UIView {
             }else if self.direction == .Horizontal{
                 frame = self.positionToFrame(position: item)
             }
-            self.drawItem(frame: frame, title: titles[item])
+            self.drawItem(frame: frame, title: titles[item], position: item)
         }
     }
     
-    private func drawItem(frame: CGRect, title: String) {
+    private func drawItem(frame: CGRect, title: String, position: Int) {
         let view = UINib(nibName: String(describing: PlaySoundKeyboardItemView.classForCoder()), bundle: nil).instantiate(withOwner: nil, options: nil).last as! PlaySoundKeyboardItemView
         let color = UIColor(red: randomCGFloatNumber(lower: 0, upper: 1), green: randomCGFloatNumber(lower: 0, upper: 1), blue: randomCGFloatNumber(lower: 0, upper: 1), alpha: randomCGFloatNumber(lower: 0.5, upper: 1))
         view.bgView.backgroundColor = color
         view.frame = frame
         view.titleLabel.text = title
+        
+        // 点击事件
+        let tap = KeyboardTapGestureRecognizer(target: self, action: #selector(itemDidSelected(tap:)))
+        tap.itemIndex = position
+        view.addGestureRecognizer(tap)
+        
         self.scrollView.addSubview(view)
+    }
+    
+    @objc
+    private func itemDidSelected(tap: KeyboardTapGestureRecognizer) {
+        let index = tap.itemIndex
+        self.delegate?.playSoundKeyboardView(view: self, itemDidSelected: index)
+//        let randomName = self.soundRes.randomElement()
+//        guard let url = Bundle.main.url(forResource: randomName, withExtension: nil) else {return}
+//        let player = try? AVAudioPlayer(contentsOf: url)
+//        self.player = player
+//        self.player?.play()
     }
     
     private func positionToFrame(position: Int) -> CGRect {
@@ -297,6 +360,7 @@ class PlaySoundKeyboardView: UIView {
         self.scrollView.subviews.forEach { (sub) in
             sub.removeFromSuperview()
         }
+        self.setupSegmentTitles()
         self.initItemList(positions: self.itemPos, titles: self.itemTitles)
         self.setupPageSegmentTitles()
         self.scrollView.contentSize = self.scrollContentSize()

@@ -10,10 +10,16 @@ import UIKit
 
 class ViewController: UIViewController {
     
+    @IBOutlet weak var timeLabel: UILabel!
+    
     private var spectrumView: SoundSpectrumView?
     
     private var timer: Timer?
-    private var progressValue: CGFloat = 0
+    private var progressValue: CGFloat = 0 {
+        didSet {
+            timeLabel.text = "\(Int(progressValue))"
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,10 +33,18 @@ class ViewController: UIViewController {
         self.view.addSubview(soundwave)
         self.spectrumView = soundwave
         
+        let ssvm = SoundSpectrumViewModel()
+        ssvm.configView(view: soundwave)
+        
+        soundwave.delegate = self
+        
         let kbFrame = CGRect(x: 0, y: 200, width: self.view.bounds.width, height: 500)
-        let titles = ["场景", "情节", "国风", "嘻哈"]
-        let keyboardView = PlaySoundKeyboardView(frame: kbFrame, titles: titles)
+        let keyboardView = PlaySoundKeyboardView(frame: kbFrame)
         self.view.addSubview(keyboardView)
+        let kbvm = PlaySoundKeyboardViewModel()
+        kbvm.configView(view: keyboardView)
+        
+        keyboardView.delegate = self
         
     }
     
@@ -72,3 +86,14 @@ class ViewController: UIViewController {
     }
 }
 
+extension ViewController: PlaySoundKeyboardViewDelegate {
+    func playSoundKeyboardView(view: PlaySoundKeyboardView, itemDidSelected index: Int) {
+        print("selected index = \(index)")
+    }
+}
+
+extension ViewController: SoundSpectrumViewDelegate {
+    func soundSpectrumView(view: SoundSpectrumView, seekTo: Double) {
+        self.progressValue = CGFloat(seekTo)
+    }
+}

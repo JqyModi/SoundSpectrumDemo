@@ -9,6 +9,7 @@ target 'SoundSpectrumViewDemo' do
 #  pod "EZAudio"
   pod "DSWaveformImage"
   pod 'JXSegmentedView'
+  pod 'TheAmazingAudioEngine'
 
   target 'SoundSpectrumViewDemoTests' do
     inherit! :search_paths

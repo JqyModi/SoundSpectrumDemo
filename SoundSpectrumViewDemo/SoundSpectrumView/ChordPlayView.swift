@@ -13,13 +13,10 @@ class ChordPlayView: UIView {
     private let lineWidth: CGFloat = 2
     private let lineHeight: CGFloat = 50
     private let lineColor: UIColor = .lightGray
-    private let cpBackgroundColor: UIColor = UIColor(white: 0, alpha: 0.05)
-    
-    private var lineXs: [CGFloat] = []
+    private let cpBackgroundColor: UIColor = .clear
 
-    init(frame: CGRect, lineXs: [CGFloat]) {
+    override init(frame: CGRect) {
         super.init(frame: frame)
-        self.lineXs = lineXs
         self.initViews()
     }
     
@@ -28,10 +25,19 @@ class ChordPlayView: UIView {
     }
     
     private func initViews() {
-//        self.backgroundColor = self.cpBackgroundColor
-        self.backgroundColor = nil
-        for item in self.lineXs {
+        self.backgroundColor = self.cpBackgroundColor
+    }
+    
+    public func drawLines(lineXs: [CGFloat]) {
+        self.removeAllMark()
+        for item in lineXs {
             self.drawVerticalLine(lineFrameX: item)
+        }
+    }
+    
+    public func removeAllMark() {
+        self.subviews.forEach { (sub) in
+            sub.removeFromSuperview()
         }
     }
     
@@ -40,5 +46,4 @@ class ChordPlayView: UIView {
         line.backgroundColor = self.lineColor
         self.addSubview(line)
     }
-    
 }

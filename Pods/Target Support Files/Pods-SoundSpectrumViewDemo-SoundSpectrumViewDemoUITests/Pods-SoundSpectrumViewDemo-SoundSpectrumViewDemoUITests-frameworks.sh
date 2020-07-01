@@ -163,10 +163,12 @@ strip_invalid_archs() {
 if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/DSWaveformImage/DSWaveformImage.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/JXSegmentedView/JXSegmentedView.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/TheAmazingAudioEngine/TheAmazingAudioEngine.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/DSWaveformImage/DSWaveformImage.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/JXSegmentedView/JXSegmentedView.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/TheAmazingAudioEngine/TheAmazingAudioEngine.framework"
 fi
 if [ "${COCOAPODS_PARALLEL_CODE_SIGN}" == "true" ]; then
   wait

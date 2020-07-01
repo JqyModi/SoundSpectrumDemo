@@ -37,16 +37,29 @@
                                     <action selector="resset:" destination="BYZ-38-t0r" eventType="touchUpInside" id="mKv-UV-k4u"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uKT-va-w7T">
+                                <rect key="frame" x="96" y="797" width="222" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
+                            <constraint firstItem="JuP-Ef-NtL" firstAttribute="leading" secondItem="uKT-va-w7T" secondAttribute="trailing" constant="16" id="AxX-Mg-UfP"/>
+                            <constraint firstItem="uKT-va-w7T" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="BNp-j1-9Zg"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="iHc-cA-iFT" secondAttribute="bottom" constant="30" id="Ecy-T0-XkR"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="uKT-va-w7T" secondAttribute="bottom" constant="44" id="FDn-oS-XYy"/>
+                            <constraint firstItem="uKT-va-w7T" firstAttribute="leading" secondItem="iHc-cA-iFT" secondAttribute="trailing" constant="16" id="IWy-UR-s8w"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="JuP-Ef-NtL" secondAttribute="trailing" constant="30" id="Qsn-BQ-bOA"/>
                             <constraint firstItem="iHc-cA-iFT" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="30" id="c46-e9-UFO"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="JuP-Ef-NtL" secondAttribute="bottom" constant="30" id="hDu-ih-M6N"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
+                    <connections>
+                        <outlet property="timeLabel" destination="uKT-va-w7T" id="xoz-yC-YTQ"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>

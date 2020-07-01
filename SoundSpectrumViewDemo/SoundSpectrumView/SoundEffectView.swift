@@ -20,20 +20,20 @@ class SoundEffectView: UIView {
     private let darkpurple = UIColor(red: 66/255, green: 74/255, blue: 118/255, alpha: 1)
     private let darkred = UIColor(red: 128/255, green: 55/255, blue: 55/255, alpha: 1)
     
-    private let lineCount: CGFloat = 4
-    private let lineOffset: CGFloat = 8
-    private let markHeight: CGFloat = 8
-    private let cpBackgroundColor: UIColor = UIColor(white: 0, alpha: 0.05)
+    private var lineCount: CGFloat = 4
+    private var lineOffset: CGFloat = 8
+    private var markHeight: CGFloat = 8
+    private let cpBackgroundColor: UIColor = .clear
     
-    private var lineXs: [CGFloat] = []
-    private var lineWs: [CGFloat] = []
-    private var lineIdxs: [Int] = []
+    public var model: SoundEffectViewModel! {
+        didSet {
+            guard model != nil else {return}
+            self.drawMarks()
+        }
+    }
     
-    init(frame: CGRect, lineXs: [CGFloat], lineWs: [CGFloat], lineIdxs: [Int]) {
+    override init(frame: CGRect) {
         super.init(frame: frame)
-        self.lineXs = lineXs
-        self.lineWs = lineWs
-        self.lineIdxs = lineIdxs
         self.initViews()
     }
     
@@ -42,13 +42,13 @@ class SoundEffectView: UIView {
     }
     
     private func initViews() {
-//        self.backgroundColor = self.cpBackgroundColor
-        self.backgroundColor = nil
-        for index in 0..<self.lineXs.count {
-            let linex = self.lineXs[index]
-            let linew = self.lineWs[index]
-            let lineindex = self.lineIdxs[index]
-            self.drawMark(frameX: linex, frameWidth: linew, lineIndex: lineindex)
+        self.backgroundColor = self.cpBackgroundColor
+    }
+    
+    private func drawMarks() {
+        let items = model.markViewModels
+        items.forEach { (mark) in
+            self.drawMark(markViewModel: mark)
         }
     }
     
@@ -77,8 +77,11 @@ class SoundEffectView: UIView {
         
     }
     
-    public func randomMark(frameX: CGFloat, frameWidth: CGFloat, lineIndex: Int, animate: Bool = false) {
-        self.drawMark(frameX: frameX, frameWidth: frameWidth, lineIndex: lineIndex, animate: animate)
+    private func drawMark(markViewModel: EffectMarkItemViewModel, animate: Bool = false) {
+        guard let mark = EffectMarkItemViewModel.createMarkView() else {return}
+        mark.frame = markViewModel.markFrame()
+        markViewModel.configView(view: mark)
+        self.addSubview(mark)
     }
     
     private func lineIndexToColors(lineIndex: Int) -> (head: UIColor, tail: UIColor) {
@@ -93,6 +96,12 @@ class SoundEffectView: UIView {
             colors = (self.lightred, self.darkred)
         }
         return colors
+    }
+    
+    public func removeAllMark() {
+        self.subviews.forEach { (sub) in
+            sub.removeFromSuperview()
+        }
     }
     
 }

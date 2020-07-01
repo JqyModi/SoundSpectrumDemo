@@ -15,102 +15,100 @@ public func randomCGFloatNumber(lower: CGFloat = 0,upper: CGFloat = 1) -> CGFloa
     return CGFloat(Float(arc4random()) / Float(UInt32.max)) * (upper - lower) + lower
 }
 
+protocol SoundSpectrumViewDelegate: class {
+//    func soundSpectrumView(seekBegain view: SoundSpectrumView)
+    func soundSpectrumView(view: SoundSpectrumView, seekTo: Double)
+//    func soundSpectrumView(seekEnd view: SoundSpectrumView)
+}
+
 class SoundSpectrumView: UIView {
     
-    private let widthPerSecond: CGFloat = 50
-    private let audionDuration: TimeInterval = 33
-    private let cursorLeftOffset: CGFloat = 93.75
+    private var widthPerSecond: CGFloat = 50
+    private var audionDuration: TimeInterval = 33
+    private var cursorLeftOffset: CGFloat = 93.75
+    private var cursorColor: UIColor = .red
+    private var maxScrollWidth: CGFloat = 375
+    private var audioURL: URL?
+    
+    public weak var delegate: SoundSpectrumViewDelegate?
     
     @IBOutlet weak var scrollView: UIScrollView!
     
+    private var chordPlayView: ChordPlayView!
     private var effectView: SoundEffectView?
-    private var cursorView: UIView?
+    
+    public var model: SoundSpectrumViewModel! {
+        didSet {
+            guard model != nil else {return}
+            self.configView(model: model)
+            self.reloadData()
+        }
+    }
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        self.setupScrollView()
-        self.initViews()
+        self.initScrollView()
     }
     
-    private func setupScrollView() {
+    private func initScrollView() {
         self.scrollView.backgroundColor = .clear
         self.scrollView.showsVerticalScrollIndicator = false
         self.scrollView.showsHorizontalScrollIndicator = false
-        self.scrollView.contentSize = self.scrollContentSize()
+    }
+    
+    private func setupScrollView() {
         let edgeOffset: CGFloat = cursorLeftOffset
         self.scrollView.contentInset = UIEdgeInsets(top: 0, left: edgeOffset, bottom: 0, right: UIScreen.main.bounds.width-edgeOffset)
+        self.scrollView.delegate = self
     }
     
     private func initViews() {
         self.backgroundColor = .black
         
-        let frame = CGRect(origin: .zero, size: self.scrollContentSize())
+        self.scrollView.contentSize = CGSize(width: self.maxScrollWidth, height: self.bounds.height)
+        
+        let frame = CGRect(origin: .zero, size: self.scrollView.contentSize)
         
         // wavefrom
-        guard let audioURL = self.audioURL() else {return}
-        let wave = SoundWaveView(audioURL: audioURL, frame: frame)
-        self.scrollView.addSubview(wave)
+        if let audioURL = self.audioURL {
+            let wave = SoundWaveView(audioURL: audioURL, frame: frame)
+            self.scrollView.addSubview(wave)
+        }
         
         // chordPlays
-        let cpv = ChordPlayView(frame: frame, lineXs: self.randomChordPlayX())
+        let cpv = ChordPlayView(frame: frame)
         self.scrollView.addSubview(cpv)
+        self.chordPlayView = cpv
         
         // effects
-        let randomMarkCount = 100
-        let sev = SoundEffectView(frame: frame, lineXs: [], lineWs: [], lineIdxs: [])
+        let sev = SoundEffectView(frame: frame)
         self.scrollView.addSubview(sev)
         self.effectView = sev
         
         // cursorView
         let cursor = UIView(frame: CGRect(x: self.cursorLeftOffset, y: 0, width: 1, height: self.bounds.height))
-        cursor.backgroundColor = .red
+        cursor.backgroundColor = self.cursorColor
         self.addSubview(cursor)
     }
     
-    /// 获取随机弹奏序列
-    private func randomChordPlayX(randomMax: Int = 20) -> [CGFloat] {
-        var xs = [CGFloat]()
-        for _ in 0..<randomMax {
-            let x = randomCGFloatNumber(lower: 5, upper: self.maxScrollWidth())
-            xs.append(x)
-        }
-        return xs.sorted()
+    private func initDatas() {
+        self.chordPlayView.drawLines(lineXs: model.playChordFrameXs)
     }
     
-    /// 获取随机音效长度
-    private func randomEffectMarkWidth(randomMax: Int = 20) -> [CGFloat] {
-        var ws = [CGFloat]()
-        for _ in 0..<randomMax {
-            let w = randomCGFloatNumber(lower: 10, upper: 100)
-            ws.append(w)
-        }
-        return ws
+    public func configView(model: SoundSpectrumViewModel) {
+        self.widthPerSecond = model.widthPerSecond
+        self.audionDuration = model.duration
+        self.audioURL = model.audioURL
+        self.cursorColor = model.cursorColor
+        self.cursorLeftOffset = model.cursorLeftOffset
+        self.maxScrollWidth = model.maxScrollWidth
     }
     
-    /// 获取随机行下标
-    private func randomLineIndex(randomMax: Int = 20) -> [Int] {
-        var idxs = [Int]()
-        for _ in 0..<randomMax {
-            let idx = randomCGFloatNumber(lower: 0, upper: 4)
-            idxs.append(Int(idx))
-        }
-        return idxs
-    }
-    
-    private func audioURL() -> URL? {
-        return Bundle.main.url(forResource: "rain_love.mp3", withExtension: nil)
-    }
-    
-    private func audioDuration() -> TimeInterval {
-        return self.audionDuration
-    }
-    
-    private func maxScrollWidth() -> CGFloat {
-        return CGFloat(self.audionDuration)*self.widthPerSecond
-    }
-    
-    private func scrollContentSize() -> CGSize {
-        return CGSize(width: self.maxScrollWidth(), height: self.bounds.height)
+    public func reloadData() {
+        self.clearAllMarks()
+        self.setupScrollView()
+        self.initViews()
+        self.initDatas()
     }
     
     /// 清空marks
@@ -127,8 +125,8 @@ class SoundSpectrumView: UIView {
     
     public func updateProgress(second: Double) {
         let cpro = second/self.audionDuration
-        let leftOffset = CGFloat(cpro)*self.maxScrollWidth()
-//        self.scrollView.setContentOffset(CGPoint(x: leftOffset, y: 0), animated: false)
+        let leftOffset = CGFloat(cpro)*self.maxScrollWidth
+
         if leftOffset.isEqual(to: 0) {
             self.scrollView.contentOffset.x = 0
         }else {
@@ -138,13 +136,11 @@ class SoundSpectrumView: UIView {
                 }, completion: nil)
             }
         }
-        
-        self.randomEffectMark(frameX: leftOffset)
     }
-    
-    public func randomEffectMark(frameX: CGFloat) {
-        let w = self.randomEffectMarkWidth().randomElement() ?? 0
-        let line = self.randomLineIndex().randomElement() ?? 0
-        self.effectView?.randomMark(frameX: frameX, frameWidth: w, lineIndex: line, animate: true)
+}
+extension SoundSpectrumView: UIScrollViewDelegate {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let timeOffset = Double(scrollView.contentOffset.x/scrollView.contentSize.width) * self.audionDuration
+        self.delegate?.soundSpectrumView(view: self, seekTo: timeOffset)
     }
 }
