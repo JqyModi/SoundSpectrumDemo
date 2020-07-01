@@ -69,7 +69,10 @@ class PlaySoundKeyboardView: UIView {
     }
     
     private func initDatas() {
-        let pos = self.itemPositions()
+        var pos = self.itemPositions()
+        pos.append(35)
+        pos.append(36)
+        pos.append(45)
         self.initItemList(positions: pos)
         
         self.setupPageSegmentTitles()
@@ -186,6 +189,9 @@ class PlaySoundKeyboardView: UIView {
         if position > 0, position % (self.totalRow*self.totalColumn) == 0 {
             self.scrollPage += 1
             print("page = \(self.scrollPage)")
+        }else if position > 0, position/(self.totalRow*self.totalColumn) > self.scrollPage {
+            self.scrollPage = position/(self.totalRow*self.totalColumn)
+            print("page = \(self.scrollPage)")
         }
         
         columnIdx = columnIdx % self.totalRow
@@ -209,12 +215,15 @@ class PlaySoundKeyboardView: UIView {
     private func positionToVerticalFrame(position: Int) -> CGRect {
         
         var rowIdx = (position)/self.totalRow
-        var columnIdx = (position)%self.totalRow
+        let columnIdx = (position)%self.totalRow
         
         print("rowIdx = \(rowIdx), columnIdx = \(columnIdx)")
         
         if position > 0, position % (self.totalRow*self.totalColumn) == 0 {
             self.scrollPage += 1
+            print("page = \(self.scrollPage)")
+        }else if position > 0, position/(self.totalRow*self.totalColumn) > self.scrollPage {
+            self.scrollPage = position/(self.totalRow*self.totalColumn)
             print("page = \(self.scrollPage)")
         }
 
