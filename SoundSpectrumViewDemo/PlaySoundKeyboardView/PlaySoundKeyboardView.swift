@@ -11,6 +11,10 @@ import JXSegmentedView
 
 class PlaySoundKeyboardView: UIView {
     
+    public enum KBScrollDirection {
+        case Horizontal, Vertical
+    }
+    
     private let sectionLeftOffset: CGFloat = 15
     private let sectionTopOffset: CGFloat = 15
     private var itemWidth: CGFloat = 82.5
@@ -19,6 +23,8 @@ class PlaySoundKeyboardView: UIView {
     
     private let totalRow: Int = 3
     private let totalColumn: Int = 4
+    
+    private var direction: KBScrollDirection = .Vertical
 
     private var segmentedView: JXSegmentedView!
     private var segmentedDataSource: JXSegmentedTitleDataSource!
@@ -139,14 +145,24 @@ class PlaySoundKeyboardView: UIView {
  
     private func initItemList(positions: [Int], isAutoFullEmpty: Bool = false) {
         for item in positions {
-            let frame = self.positionToFrame(position: item)
+            var frame: CGRect = .zero
+            if self.direction == .Vertical {
+                frame = self.positionToVerticalFrame(position: item)
+            }else if self.direction == .Horizontal{
+                frame = self.positionToFrame(position: item)
+            }
             self.drawItem(frame: frame, title: "\(item)")
         }
     }
     
     private func initItemList(positions: [Int], titles: [String], isAutoFullEmpty: Bool = false) {
         for item in positions {
-            let frame = self.positionToFrame(position: item)
+            var frame: CGRect = .zero
+            if self.direction == .Vertical {
+                frame = self.positionToVerticalFrame(position: item)
+            }else if self.direction == .Horizontal{
+                frame = self.positionToFrame(position: item)
+            }
             self.drawItem(frame: frame, title: titles[item])
         }
     }
@@ -173,6 +189,36 @@ class PlaySoundKeyboardView: UIView {
         }
         
         columnIdx = columnIdx % self.totalRow
+        
+        let fRowIdx = CGFloat(rowIdx)
+        let widths = fRowIdx*self.itemWidth
+        let hoffsets = (fRowIdx)*self.itemOffset
+        let pageOffset = CGFloat(self.scrollPage)*self.bounds.width
+        let x = self.sectionLeftOffset + widths + hoffsets + pageOffset
+        
+        let fcolumnIdx = CGFloat(columnIdx)
+        let heights = fcolumnIdx*self.itemHeight
+        let voffsets = (fcolumnIdx)*itemOffset
+        let y = self.sectionTopOffset + heights + voffsets
+        
+        let frame = CGRect(x: x, y: y, width: self.itemWidth, height: self.itemHeight)
+        print("position = \(position) \n frame = \(frame.debugDescription)")
+        return frame
+    }
+    
+    private func positionToVerticalFrame(position: Int) -> CGRect {
+        
+        var rowIdx = (position)/self.totalRow
+        var columnIdx = (position)%self.totalRow
+        
+        print("rowIdx = \(rowIdx), columnIdx = \(columnIdx)")
+        
+        if position > 0, position % (self.totalRow*self.totalColumn) == 0 {
+            self.scrollPage += 1
+            print("page = \(self.scrollPage)")
+        }
+
+        rowIdx = rowIdx % self.totalColumn
         
         let fRowIdx = CGFloat(rowIdx)
         let widths = fRowIdx*self.itemWidth
