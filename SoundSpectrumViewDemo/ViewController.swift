@@ -89,6 +89,13 @@ class ViewController: UIViewController {
 extension ViewController: PlaySoundKeyboardViewDelegate {
     func playSoundKeyboardView(view: PlaySoundKeyboardView, itemDidSelected index: Int) {
         print("selected index = \(index)")
+        let psvm = view.model.playsoundVms[index]
+        guard var ems = self.spectrumView?.model.effectMarks.playSoundItems else {return}
+        ems.append(psvm)
+        let model = self.spectrumView?.model
+        model?.playsounds = ems
+        self.spectrumView?.model = model
+        
     }
 }
 

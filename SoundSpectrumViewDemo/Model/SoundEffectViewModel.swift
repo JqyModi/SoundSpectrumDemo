@@ -16,6 +16,10 @@ class SoundEffectViewModel {
         self.playSounds = playSounds
     }
     
+    public var playSoundItems: [PlaySoundViewModel] {
+        return self.playSounds
+    }
+    
     public var markViewModels: [EffectMarkItemViewModel] {
         return self.playSounds.map { (psvm) -> EffectMarkItemViewModel in
             return EffectMarkItemViewModel(playSound: psvm, lineCount: self.lineCount, containerViewHeight: self.containerViewHeight)

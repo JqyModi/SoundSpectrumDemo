@@ -12,6 +12,18 @@ import TheAmazingAudioEngine
 
 class SoundSpectrumViewModel {
     
+    public var playsounds: [PlaySoundViewModel] = []
+    
+    private var randomXs = [CGFloat]()
+    
+    init(playsounds: [PlaySoundViewModel] = []) {
+        self.playsounds = playsounds
+//        if playsounds.isEmpty {
+//            self.playsounds = self.playSounds()
+//        }
+        self.randomXs = self.randomChordPlayX()
+    }
+    
     public var audioURL: URL? {
         return Bundle.main.url(forResource: "rain_love.mp3", withExtension: nil)
     }
@@ -42,7 +54,11 @@ class SoundSpectrumViewModel {
     }
     
     public var playChordFrameXs: [CGFloat] {
-        return self.randomChordPlayX()
+        return self.randomXs
+    }
+    
+    public var effectMarks: SoundEffectViewModel {
+        return SoundEffectViewModel(playSounds: self.playsounds)
     }
     
     /// 获取随机弹奏序列
@@ -55,24 +71,15 @@ class SoundSpectrumViewModel {
         return xs.sorted()
     }
     
-    /// 获取随机音效长度
-    private func randomEffectMarkWidth(randomMax: Int = 20) -> [CGFloat] {
-        var ws = [CGFloat]()
-        for _ in 0..<randomMax {
-            let w = randomCGFloatNumber(lower: 10, upper: 100)
-            ws.append(w)
+    /// 随机获取弹奏音效数据
+    /// - Parameter randomMax: 随机数
+    private func playSounds(randomMax: Int = 20) -> [PlaySoundViewModel] {
+        var psvms = [PlaySoundViewModel]()
+        for item in 0...randomMax {
+            let psvm = PlaySoundViewModel.playSoundViewModel(index: item, timeOffset: Double(randomCGFloatNumber(lower: 0, upper: CGFloat(self.duration))))
+            psvms.append(psvm)
         }
-        return ws
-    }
-    
-    /// 获取随机行下标
-    private func randomLineIndex(randomMax: Int = 20) -> [Int] {
-        var idxs = [Int]()
-        for _ in 0..<randomMax {
-            let idx = randomCGFloatNumber(lower: 0, upper: 4)
-            idxs.append(Int(idx))
-        }
-        return idxs
+        return psvms
     }
     
     public func configView(view: SoundSpectrumView) {

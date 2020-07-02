@@ -18,7 +18,7 @@ class PlaySoundKeyboardViewModel: NSObject {
     public var playsoundVms: [PlaySoundViewModel] {
         var psvms = [PlaySoundViewModel]()
         for idx in 0...35 {
-            let psvm = PlaySoundViewModel.playSoundViewModel(index: idx)
+            let psvm = PlaySoundViewModel.playSoundViewModel(index: idx, timeOffset: Double(randomCGFloatNumber(lower: 0, upper: 20)))
             psvms.append(psvm)
         }
         return psvms
@@ -61,12 +61,13 @@ class PlaySoundViewModel: NSObject {
     
     /// 虚拟数据
     /// - Parameter index: 下标
-    public class func playSoundViewModel(index: Int) -> PlaySoundViewModel {
+    public class func playSoundViewModel(index: Int, timeOffset: Double = 0) -> PlaySoundViewModel {
         let psvm = PlaySoundViewModel()
         psvm.titleText = self.upperLetters().randomElement() ?? ""
         psvm.audioName = self.soundResNames().randomElement() ?? ""
         psvm.index = index
         psvm.indexLevel = Int(randomCGFloatNumber(lower: 0, upper: 4))
+        psvm.userClickTimeOffset = timeOffset
         return psvm
     }
     

@@ -80,7 +80,8 @@ class SoundEffectView: UIView {
     private func drawMark(markViewModel: EffectMarkItemViewModel, animate: Bool = false) {
         guard let mark = EffectMarkItemViewModel.createMarkView() else {return}
         mark.frame = markViewModel.markFrame()
-        markViewModel.configView(view: mark)
+//        markViewModel.configView(view: mark)
+        mark.setupColor(lineIndex: markViewModel.indexLevel)
         self.addSubview(mark)
     }
     

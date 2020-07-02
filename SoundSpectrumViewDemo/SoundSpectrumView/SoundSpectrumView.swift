@@ -93,6 +93,7 @@ class SoundSpectrumView: UIView {
     
     private func initDatas() {
         self.chordPlayView.drawLines(lineXs: model.playChordFrameXs)
+        self.effectView?.model = model.effectMarks
     }
     
     public func configView(model: SoundSpectrumViewModel) {
@@ -114,11 +115,14 @@ class SoundSpectrumView: UIView {
     /// 清空marks
     public func clearAllMarks() {
         for item in self.scrollView.subviews {
-            if item.isKind(of: SoundEffectView.self) {
-                item.subviews.forEach { (subView) in
-                    subView.removeFromSuperview()
-                }
-                return
+//            if item.isKind(of: SoundEffectView.self) {
+//                item.subviews.forEach { (subView) in
+//                    subView.removeFromSuperview()
+//                }
+//                return
+//            }
+            item.subviews.forEach { (subView) in
+                subView.removeFromSuperview()
             }
         }
     }
@@ -136,6 +140,9 @@ class SoundSpectrumView: UIView {
                 }, completion: nil)
             }
         }
+        
+        // 随机弹奏
+        
     }
 }
 extension SoundSpectrumView: UIScrollViewDelegate {
