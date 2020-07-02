@@ -18,7 +18,7 @@ class PlaySoundKeyboardViewModel: NSObject {
     public var playsoundVms: [PlaySoundViewModel] {
         var psvms = [PlaySoundViewModel]()
         for idx in 0...35 {
-            let psvm = PlaySoundViewModel.playSoundViewModel(index: idx, timeOffset: Double(randomCGFloatNumber(lower: 0, upper: 20)))
+            let psvm = PlaySoundViewModel.playSoundViewModel(index: idx, timeOffset: Double(randomCGFloatNumber(lower: 0, upper: 33)))
             psvms.append(psvm)
         }
         return psvms
@@ -40,7 +40,9 @@ class PlaySoundViewModel: NSObject {
     
     public var index: Int = 0
     
-    public var indexLevel: Int = 0
+    public var indexLevel: Int = 1
+    
+    public var colorIndex: Int = 1
     
     public var timeOffset: Double = 0
     
@@ -54,7 +56,7 @@ class PlaySoundViewModel: NSObject {
         return Bundle.main.url(forResource: audioName, withExtension: nil)
     }
     
-    private var module: AEAudioFilePlayer? {
+    public var module: AEAudioFilePlayer? {
         guard let url = audioURL else { return nil }
         return try? AEAudioFilePlayer(url: url)
     }

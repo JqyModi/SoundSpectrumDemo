@@ -14,6 +14,7 @@ class SoundEffectViewModel {
     
     init(playSounds: [PlaySoundViewModel]) {
         self.playSounds = playSounds
+        self.playSoundsColorIndex()
     }
     
     public var playSoundItems: [PlaySoundViewModel] {
@@ -29,13 +30,37 @@ class SoundEffectViewModel {
     public var containerViewHeight: CGFloat = 100
     
     public var lineCount: Int {
-        var level: Int = 0
-        self.playSounds.forEach { (psvm) in
-            if psvm.indexLevel > level {
-                level = psvm.indexLevel
-            }
+        let sortLevels = self.playSounds.compactMap { (psvm) -> Int in
+            return psvm.indexLevel
         }
-        return level
+        return sortLevels.sorted().removingDuplicates().count
     }
     
+    private func playSoundsColorIndex() {
+        let pss = self.playSounds.map { (psvm) -> Int in
+            return psvm.indexLevel
+        }
+        let singleItems = pss.removingDuplicates()
+        for item in self.playSounds.enumerated() {
+            for sis in singleItems.enumerated() {
+                if item.element.indexLevel == sis.element {
+                    item.element.colorIndex = sis.offset
+                }
+            }
+        }
+    }
+    
+}
+extension Array where Element: Hashable {
+    func removingDuplicates() -> [Element] {
+        var addedDict = [Element: Bool]()
+
+        return filter {
+            addedDict.updateValue(true, forKey: $0) == nil
+        }
+    }
+
+    mutating func removeDuplicates() {
+        self = self.removingDuplicates()
+    }
 }

@@ -28,6 +28,7 @@ class SoundEffectView: UIView {
     public var model: SoundEffectViewModel! {
         didSet {
             guard model != nil else {return}
+            self.lineCount = CGFloat(model.lineCount)
             self.drawMarks()
         }
     }

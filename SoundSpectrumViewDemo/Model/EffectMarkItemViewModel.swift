@@ -45,6 +45,14 @@ class EffectMarkItemViewModel {
         return playSound.indexLevel
     }
     
+    public var colorIndex: Int {
+        return playSound.colorIndex
+    }
+    
+    public var timeOffset: Double {
+        return playSound.userClickTimeOffset
+    }
+    
     public var headColor: UIColor {
         return .red
     }
@@ -62,7 +70,7 @@ class EffectMarkItemViewModel {
         let tOffset = CGFloat(self.lineCount-1)*self.lineOffset
         let tHeight = CGFloat(self.lineCount)*self.markHeight
         let lineTopY = (self.containerViewHeight - (tOffset+tHeight))/2
-        let y = lineTopY+CGFloat(self.indexLevel)*(self.markHeight+self.lineOffset)
+        let y = lineTopY+CGFloat(self.colorIndex)*(self.markHeight+self.lineOffset)
         let frame = CGRect(x: frameX, y: y, width: frameWidth, height: markHeight)
         return frame
     }

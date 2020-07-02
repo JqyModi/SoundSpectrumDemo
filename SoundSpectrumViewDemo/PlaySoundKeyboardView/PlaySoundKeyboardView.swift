@@ -141,7 +141,7 @@ class PlaySoundKeyboardView: UIView {
     }
     
     private func initPageSegmentView() {
-        let pageWidth: CGFloat = 100
+        let pageWidth: CGFloat = self.bounds.width
         let pageHeight: CGFloat = 48
         let x = (self.bounds.width-pageWidth)/2
         let y = (self.bounds.height-pageHeight-15)
@@ -219,7 +219,7 @@ class PlaySoundKeyboardView: UIView {
     private func drawItem(frame: CGRect, title: String, position: Int) {
         let view = UINib(nibName: String(describing: PlaySoundKeyboardItemView.classForCoder()), bundle: nil).instantiate(withOwner: nil, options: nil).last as! PlaySoundKeyboardItemView
         let color = UIColor(red: randomCGFloatNumber(lower: 0, upper: 1), green: randomCGFloatNumber(lower: 0, upper: 1), blue: randomCGFloatNumber(lower: 0, upper: 1), alpha: randomCGFloatNumber(lower: 0.5, upper: 1))
-        view.bgView.backgroundColor = color
+        view.bgView.backgroundColor = .clear
         view.frame = frame
         view.titleLabel.text = title
         
@@ -228,7 +228,13 @@ class PlaySoundKeyboardView: UIView {
         tap.itemIndex = position
         view.addGestureRecognizer(tap)
         
-        self.scrollView.addSubview(view)
+        let bgView = RadialGradientView(frame: frame)
+        bgView.layer.cornerRadius = 8
+        bgView.layer.masksToBounds = true
+        view.frame = bgView.bounds
+        bgView.addSubview(view)
+        
+        self.scrollView.addSubview(bgView)
     }
     
     @objc

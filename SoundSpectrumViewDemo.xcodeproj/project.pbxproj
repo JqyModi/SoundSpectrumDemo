@@ -120,6 +120,8 @@
 		C599F9A324AC705E00159307 /* SoundSpectrumViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C599F9A224AC705E00159307 /* SoundSpectrumViewModel.swift */; };
 		C599F9A524AC82FA00159307 /* SoundEffectViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C599F9A424AC82FA00159307 /* SoundEffectViewModel.swift */; };
 		C599F9A724AC8C0400159307 /* EffectMarkItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C599F9A624AC8C0400159307 /* EffectMarkItemViewModel.swift */; };
+		C599F9AA24ADBC2E00159307 /* AEPlayerKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = C599F9A924ADBC2E00159307 /* AEPlayerKit.swift */; };
+		C599F9AE24ADEBD400159307 /* KeyboardItemBgView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C599F9AD24ADEBD400159307 /* KeyboardItemBgView.swift */; };
 		C59EEFFA249C71D7004833E4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C59EEFF9249C71D7004833E4 /* AppDelegate.swift */; };
 		C59EEFFC249C71D7004833E4 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C59EEFFB249C71D7004833E4 /* SceneDelegate.swift */; };
 		C59EEFFE249C71D7004833E4 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C59EEFFD249C71D7004833E4 /* ViewController.swift */; };
@@ -268,6 +270,8 @@
 		C599F9A224AC705E00159307 /* SoundSpectrumViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundSpectrumViewModel.swift; sourceTree = "<group>"; };
 		C599F9A424AC82FA00159307 /* SoundEffectViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundEffectViewModel.swift; sourceTree = "<group>"; };
 		C599F9A624AC8C0400159307 /* EffectMarkItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EffectMarkItemViewModel.swift; sourceTree = "<group>"; };
+		C599F9A924ADBC2E00159307 /* AEPlayerKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AEPlayerKit.swift; sourceTree = "<group>"; };
+		C599F9AD24ADEBD400159307 /* KeyboardItemBgView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardItemBgView.swift; sourceTree = "<group>"; };
 		C59EEFF6249C71D7004833E4 /* SoundSpectrumViewDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SoundSpectrumViewDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C59EEFF9249C71D7004833E4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C59EEFFB249C71D7004833E4 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -3523,6 +3527,7 @@
 		C599F8D424A9C92700159307 /* PlaySoundKeyboardItemView */ = {
 			isa = PBXGroup;
 			children = (
+				C599F9AC24ADEBA700159307 /* BgView */,
 				C599F8D924A9DC3E00159307 /* PlaySoundKeyboardItemView.swift */,
 				C599F8DA24A9DC3E00159307 /* PlaySoundKeyboardItemView.xib */,
 			);
@@ -3651,6 +3656,22 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
+		C599F9A824ADBC1100159307 /* Player */ = {
+			isa = PBXGroup;
+			children = (
+				C599F9A924ADBC2E00159307 /* AEPlayerKit.swift */,
+			);
+			path = Player;
+			sourceTree = "<group>";
+		};
+		C599F9AC24ADEBA700159307 /* BgView */ = {
+			isa = PBXGroup;
+			children = (
+				C599F9AD24ADEBD400159307 /* KeyboardItemBgView.swift */,
+			);
+			path = BgView;
+			sourceTree = "<group>";
+		};
 		C59EEFED249C71D7004833E4 = {
 			isa = PBXGroup;
 			children = (
@@ -3676,6 +3697,7 @@
 		C59EEFF8249C71D7004833E4 /* SoundSpectrumViewDemo */ = {
 			isa = PBXGroup;
 			children = (
+				C599F9A824ADBC1100159307 /* Player */,
 				C599F99F24AC384500159307 /* Model */,
 				C599F8DD24AC30C200159307 /* Res */,
 				C599F8D124A9C1D800159307 /* PlaySoundKeyboardView */,
@@ -7223,9 +7245,11 @@
 				C599F8DB24A9DC3E00159307 /* PlaySoundKeyboardItemView.swift in Sources */,
 				C599F8D324A9C21300159307 /* PlaySoundKeyboardView.swift in Sources */,
 				C554C25624A4650300323A8E /* SoundEffectView.swift in Sources */,
+				C599F9AA24ADBC2E00159307 /* AEPlayerKit.swift in Sources */,
 				C59EEFFE249C71D7004833E4 /* ViewController.swift in Sources */,
 				C53797FD249CA67F00AE50E4 /* SoundWaveView.swift in Sources */,
 				C599F9A524AC82FA00159307 /* SoundEffectViewModel.swift in Sources */,
+				C599F9AE24ADEBD400159307 /* KeyboardItemBgView.swift in Sources */,
 				C53797FB249CA60D00AE50E4 /* SoundSpectrumView.swift in Sources */,
 				C59EEFFA249C71D7004833E4 /* AppDelegate.swift in Sources */,
 				C599F9A324AC705E00159307 /* SoundSpectrumViewModel.swift in Sources */,

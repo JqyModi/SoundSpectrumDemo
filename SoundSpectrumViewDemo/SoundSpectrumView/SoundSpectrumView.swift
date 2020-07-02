@@ -35,7 +35,11 @@ class SoundSpectrumView: UIView {
     @IBOutlet weak var scrollView: UIScrollView!
     
     private var chordPlayView: ChordPlayView!
-    private var effectView: SoundEffectView?
+    private var effectView: SoundEffectView!
+    
+    /// 标记是否绘制
+    private var isDrawWave: Bool = false
+    private var isDrawChordPlay: Bool = false
     
     public var model: SoundSpectrumViewModel! {
         didSet {
@@ -48,6 +52,9 @@ class SoundSpectrumView: UIView {
     override func awakeFromNib() {
         super.awakeFromNib()
         self.initScrollView()
+        self.setupScrollView()
+        self.initViews()
+        self.initDatas()
     }
     
     private func initScrollView() {
@@ -64,27 +71,46 @@ class SoundSpectrumView: UIView {
     
     private func initViews() {
         self.backgroundColor = .black
+        // wavefrom
+        self.initWaveView()
         
-        self.scrollView.contentSize = CGSize(width: self.maxScrollWidth, height: self.bounds.height)
+        // chordPlays
+        self.initChordPlayView()
         
-        let frame = CGRect(origin: .zero, size: self.scrollView.contentSize)
+        // effects
+        self.initEffctView()
+        
+        // cursorView
+        self.initCursorView()
+    }
+    
+    private func initWaveView() {
+        let frame = CGRect(origin: .zero, size: CGSize(width: self.maxScrollWidth, height: self.bounds.height))
         
         // wavefrom
         if let audioURL = self.audioURL {
             let wave = SoundWaveView(audioURL: audioURL, frame: frame)
             self.scrollView.addSubview(wave)
         }
-        
+    }
+    
+    private func initChordPlayView() {
+        let frame = CGRect(origin: .zero, size: CGSize(width: self.maxScrollWidth, height: self.bounds.height))
         // chordPlays
         let cpv = ChordPlayView(frame: frame)
         self.scrollView.addSubview(cpv)
         self.chordPlayView = cpv
-        
+    }
+    
+    private func initEffctView() {
+        let frame = CGRect(origin: .zero, size: CGSize(width: self.maxScrollWidth, height: self.bounds.height))
         // effects
         let sev = SoundEffectView(frame: frame)
         self.scrollView.addSubview(sev)
         self.effectView = sev
-        
+    }
+    
+    private func initCursorView() {
         // cursorView
         let cursor = UIView(frame: CGRect(x: self.cursorLeftOffset, y: 0, width: 1, height: self.bounds.height))
         cursor.backgroundColor = self.cursorColor
@@ -92,6 +118,7 @@ class SoundSpectrumView: UIView {
     }
     
     private func initDatas() {
+        guard model != nil else {return}
         self.chordPlayView.drawLines(lineXs: model.playChordFrameXs)
         self.effectView?.model = model.effectMarks
     }
@@ -106,24 +133,56 @@ class SoundSpectrumView: UIView {
     }
     
     public func reloadData() {
-        self.clearAllMarks()
-        self.setupScrollView()
-        self.initViews()
-        self.initDatas()
+        self.updateScrollContentSize()
+//        self.clearAllMarks()
+        self.reloadWave()
+        self.reloadChordPlay()
+        self.reloadEffect()
+    }
+    
+    private func updateScrollContentSize() {
+        self.scrollView.contentSize = CGSize(width: self.maxScrollWidth, height: self.bounds.height)
+//        self.updateSubViewsHeight()
+    }
+    
+    private func updateSubViewsHeight() {
+        self.chordPlayView?.bounds = CGRect(x: 0, y: 0, width: self.maxScrollWidth, height: self.bounds.height)
+        self.effectView?.bounds = CGRect(x: 0, y: 0, width: self.maxScrollWidth, height: self.bounds.height)
+    }
+    
+    private func reloadWave() {
+        if !self.isDrawWave {
+            self.isDrawWave = true
+            self.initWaveView()
+        }
+    }
+    
+    private func reloadChordPlay() {
+        if !self.isDrawChordPlay {
+            self.isDrawChordPlay = true
+            self.chordPlayView.removeAllMark()
+            self.chordPlayView.drawLines(lineXs: model.playChordFrameXs)
+        }
+    }
+    
+    private func reloadEffect() {
+        self.effectView?.removeAllMark()
+        self.effectView?.model = model.effectMarks
     }
     
     /// 清空marks
     public func clearAllMarks() {
         for item in self.scrollView.subviews {
-//            if item.isKind(of: SoundEffectView.self) {
-//                item.subviews.forEach { (subView) in
-//                    subView.removeFromSuperview()
-//                }
-//                return
-//            }
-            item.subviews.forEach { (subView) in
-                subView.removeFromSuperview()
+            if item.isKind(of: SoundEffectView.self) {
+                item.subviews.forEach { (subView) in
+                    subView.removeFromSuperview()
+                }
+                return
             }
+//            item.subviews.forEach { (subView) in
+//                subView.removeFromSuperview()
+//            }
+            model.playsounds = []
         }
     }
     
@@ -142,7 +201,18 @@ class SoundSpectrumView: UIView {
         }
         
         // 随机弹奏
-        
+        self.playEffects(second: second)
+    }
+    
+    public func playEffects(second: Double) {
+        let rangeOffset: Double = 0.2
+        let range = (second-rangeOffset...second+rangeOffset)
+        model.effectMarks.markViewModels.forEach { (markItem) in
+            if range.contains(markItem.timeOffset) {
+                guard let player = markItem.playSoundVM.module else {return}
+                AEPlayerKit.shared.play(player: player)
+            }
+        }
     }
 }
 extension SoundSpectrumView: UIScrollViewDelegate {

@@ -38,7 +38,7 @@ class ViewController: UIViewController {
         
         soundwave.delegate = self
         
-        let kbFrame = CGRect(x: 0, y: 200, width: self.view.bounds.width, height: 500)
+        let kbFrame = CGRect(x: 0, y: 200, width: self.view.bounds.width, height: 400)
         let keyboardView = PlaySoundKeyboardView(frame: kbFrame)
         self.view.addSubview(keyboardView)
         let kbvm = PlaySoundKeyboardViewModel()
@@ -89,12 +89,19 @@ class ViewController: UIViewController {
 extension ViewController: PlaySoundKeyboardViewDelegate {
     func playSoundKeyboardView(view: PlaySoundKeyboardView, itemDidSelected index: Int) {
         print("selected index = \(index)")
-        let psvm = view.model.playsoundVms[index]
-        guard var ems = self.spectrumView?.model.effectMarks.playSoundItems else {return}
-        ems.append(psvm)
-        let model = self.spectrumView?.model
-        model?.playsounds = ems
-        self.spectrumView?.model = model
+        
+        if self.timer?.isValid ?? false {
+            let psvm = view.model.playsoundVms[index]
+            psvm.userClickTimeOffset = Double(self.progressValue)
+            guard var ems = self.spectrumView?.model.effectMarks.playSoundItems else {return}
+            ems.append(psvm)
+            let model = self.spectrumView?.model
+            model?.playsounds = ems
+            self.spectrumView?.model = model
+        }else {
+            guard let module = view.model.playsoundVms[index].module else {return}
+            AEPlayerKit.shared.play(player: module)
+        }
         
     }
 }

@@ -3,4 +3,70 @@
    uuid = "010E2AEF-EDF8-4CF8-9351-0B6F2DD914BA"
    type = "0"
    version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "2664240C-64B7-4D37-BB80-BC330869ACDD"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "SoundSpectrumViewDemo/SoundSpectrumView/SoundEffectView.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "85"
+            endingLineNumber = "85"
+            landmarkName = "drawMark(markViewModel:animate:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "C68DA721-BAF7-45C0-99FB-1A53A3D36ED4"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "SoundSpectrumViewDemo/SoundSpectrumView/SoundSpectrumView.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "210"
+            endingLineNumber = "210"
+            landmarkName = "playEffects(second:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "C68DA721-BAF7-45C0-99FB-1A53A3D36ED4 - d0b2dcaca9ea6fb6"
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "SoundSpectrumViewDemo.SoundSpectrumView.playEffects(second: Swift.Double) -&gt; ()"
+                  moduleName = "SoundSpectrumViewDemo"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/modi/Documents/Modi/ipa%E8%B5%84%E6%BA%90/HookDemo/SoundSpectrumViewDemo/SoundSpectrumViewDemo/SoundSpectrumView/SoundSpectrumView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "210"
+                  endingLineNumber = "210"
+                  offsetFromSymbolStart = "188">
+               </Location>
+               <Location
+                  uuid = "C68DA721-BAF7-45C0-99FB-1A53A3D36ED4 - 7d6b3808fba9ca82"
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (SoundSpectrumViewDemo.EffectMarkItemViewModel) -&gt; () in SoundSpectrumViewDemo.SoundSpectrumView.playEffects(second: Swift.Double) -&gt; ()"
+                  moduleName = "SoundSpectrumViewDemo"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/modi/Documents/Modi/ipa%E8%B5%84%E6%BA%90/HookDemo/SoundSpectrumViewDemo/SoundSpectrumViewDemo/SoundSpectrumView/SoundSpectrumView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "211"
+                  endingLineNumber = "211"
+                  offsetFromSymbolStart = "136">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
 </Bucket>
