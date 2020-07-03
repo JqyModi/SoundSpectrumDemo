@@ -12,6 +12,7 @@ import TheAmazingAudioEngine
 class ViewController: UIViewController {
     
     @IBOutlet weak var timeLabel: UILabel!
+    @IBOutlet weak var playBtn: UIButton!
     
     private var spectrumView: SoundSpectrumView?
     
@@ -19,6 +20,8 @@ class ViewController: UIViewController {
     
     private var isOrgPlayer: Bool = false
     private var orgPlayer: AEAudioFilePlayer!
+    
+    private var orgDuration: CGFloat = 0
     
     private var progressValue: CGFloat = 0 {
         didSet {
@@ -56,30 +59,34 @@ class ViewController: UIViewController {
     
     private func initPlayer() {
         guard let player = self.spectrumView?.model.module else {return}
+        self.orgDuration = CGFloat(player.regionDuration)
         player.removeUponFinish = false
         player.completionBlock = {
-            player.channelIsMuted = true
+            self.resetOrgPlayer()
         }
         AEPlayerKit.shared.play(player: player)
         self.orgPlayer = player
     }
     
     private func initTimer() {
-        let timer = Timer.scheduledTimer(timeInterval: 0.05, target: self, selector: #selector(self.updateProgress), userInfo: nil, repeats: true)
+        let timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.updateProgress), userInfo: nil, repeats: true)
         self.timer = timer
         
-//        if !self.isOrgPlayer {
-//            self.initPlayer()
-//        }else {
-//            self.orgPlayer.channelIsMuted = false
-//        }
+        if !self.isOrgPlayer {
+            self.isOrgPlayer = true
+            self.initPlayer()
+        }else {
+            self.orgPlayer.regionStartTime = TimeInterval(self.progressValue)
+            self.orgPlayer.channelIsPlaying = true
+        }
     }
     
     @objc private func updateProgress() {
-        progressValue += 0.15
+        progressValue += 1
         print("progress: \(progressValue)")
-        if progressValue > 33 {
-           progressValue = 0
+        if progressValue > self.orgDuration {
+            progressValue = 0
+            self.stopTimer()
         }
         DispatchQueue.main.async {
             self.spectrumView?.updateProgress(second: Double(self.progressValue))
@@ -90,19 +97,36 @@ class ViewController: UIViewController {
         timer?.invalidate()
         timer = nil
         
-//        self.orgPlayer.channelIsMuted = true
+        self.orgPlayer.channelIsPlaying = false
+    }
+    
+    private func stopTimer() {
+        timer?.invalidate()
+        timer = nil
+        self.resetOrgPlayer()
+        self.resetPlayBtn()
+    }
+    
+    private func resetOrgPlayer() {
+        self.orgPlayer.regionStartTime = 0
+        self.orgPlayer.channelIsPlaying = false
     }
     
     @IBAction func play(_ sender: UIButton) {
         if sender.isSelected {
             sender.isSelected = false
-            sender.setTitle("Pause", for: .selected)
+            sender.setTitle("Play", for: .normal)
             self.pauseTimer()
         }else {
             sender.isSelected = true
-            sender.setTitle("Play", for: .normal)
+            sender.setTitle("Pause", for: .selected)
             self.initTimer()
         }
+    }
+    
+    private func resetPlayBtn() {
+        self.playBtn.isSelected = false
+        self.playBtn.setTitle("Play", for: .normal)
     }
     
     @IBAction func resset(_ sender: UIButton) {
@@ -113,7 +137,6 @@ class ViewController: UIViewController {
 
 extension ViewController: PlaySoundKeyboardViewDelegate {
     func playSoundKeyboardView(view: PlaySoundKeyboardView, itemDidSelected index: Int) {
-        print("selected index = \(index)")
         
         if self.timer?.isValid ?? false {
             guard let psvm = view.model.playsoundVms[index].copy() as? PlaySoundViewModel else {return}
@@ -124,8 +147,6 @@ extension ViewController: PlaySoundKeyboardViewDelegate {
             let model = self.spectrumView?.model
             model?.playsounds = ems
             self.spectrumView?.model = model
-            print("弹奏加1")
-            print("model?.playsounds.count = \(model?.playsounds.count)")
         }
         
         guard let module = view.model.playsoundVms[index].module else {return}

@@ -58,6 +58,7 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>
+                        <outlet property="playBtn" destination="JuP-Ef-NtL" id="2fT-Ty-pZZ"/>
                         <outlet property="timeLabel" destination="uKT-va-w7T" id="xoz-yC-YTQ"/>
                     </connections>
                 </viewController>

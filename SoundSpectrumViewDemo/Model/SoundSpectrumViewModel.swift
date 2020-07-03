@@ -29,7 +29,7 @@ class SoundSpectrumViewModel {
     }
     
     public var widthPerSecond: CGFloat {
-        return 50
+        return 30
     }
     
     public var cursorColor: UIColor {
