@@ -49,8 +49,18 @@ class SoundEffectView: UIView {
     private func drawMarks() {
         let items = model.markViewModels
         items.forEach { (mark) in
-            self.drawMark(markViewModel: mark)
+            self.drawMark(markViewModel: mark, animate: false)
+            // 重置
+            self.resetDrawAnimate()
         }
+    }
+    
+    private func resetDrawAnimate() {
+        let playItems = model.playSoundItems
+        playItems.forEach { (item) in
+            item.drawAnimate = false
+        }
+        model.setPlaySounds(playSounds: playItems)
     }
     
     private func drawMark(frameX: CGFloat, frameWidth: CGFloat, lineIndex: Int, animate: Bool = false) {
@@ -82,7 +92,16 @@ class SoundEffectView: UIView {
         guard let mark = EffectMarkItemViewModel.createMarkView() else {return}
         mark.frame = markViewModel.markFrame()
 //        markViewModel.configView(view: mark)
-        mark.setupColor(lineIndex: markViewModel.indexLevel)
+        let colors = self.lineIndexToColors(lineIndex: markViewModel.indexLevel)
+        if markViewModel.drawAnimate {
+            mark.setHeadColor(color: colors.head)
+            mark.setTailColor(color: colors.head)
+            UIView.animate(withDuration: 0.25) {
+                mark.setupColor(lineIndex: markViewModel.indexLevel)
+            }
+        }else {
+            mark.setupColor(lineIndex: markViewModel.indexLevel)
+        }
         self.addSubview(mark)
     }
     

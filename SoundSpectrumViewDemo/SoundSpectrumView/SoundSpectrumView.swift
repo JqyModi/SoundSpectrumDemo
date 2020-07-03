@@ -41,6 +41,8 @@ class SoundSpectrumView: UIView {
     private var isDrawWave: Bool = false
     private var isDrawChordPlay: Bool = false
     
+    private var recordPlaySound: PlaySoundViewModel!
+    
     public var model: SoundSpectrumViewModel! {
         didSet {
             guard model != nil else {return}
@@ -91,6 +93,7 @@ class SoundSpectrumView: UIView {
         if let audioURL = self.audioURL {
             let wave = SoundWaveView(audioURL: audioURL, frame: frame)
             self.scrollView.addSubview(wave)
+            self.scrollView.sendSubviewToBack(wave)
         }
     }
     
@@ -205,12 +208,24 @@ class SoundSpectrumView: UIView {
     }
     
     public func playEffects(second: Double) {
-        let rangeOffset: Double = 0.2
+        self.recordPlaySound = nil
+        let rangeOffset: Double = 0.1
         let range = (second-rangeOffset...second+rangeOffset)
         model.effectMarks.markViewModels.forEach { (markItem) in
             if range.contains(markItem.timeOffset) {
+                
+                if self.recordPlaySound != nil, self.recordPlaySound.titleText.elementsEqual(markItem.playSoundVM.titleText) {
+                    print("相同对象只用一次")
+                    return
+                }
+                
                 guard let player = markItem.playSoundVM.module else {return}
+                player.removeUponFinish = true
                 AEPlayerKit.shared.play(player: player)
+                
+                self.recordPlaySound = markItem.playSoundVM
+                
+                return
             }
         }
     }

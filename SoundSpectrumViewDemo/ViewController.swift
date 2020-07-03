@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import TheAmazingAudioEngine
 
 class ViewController: UIViewController {
     
@@ -15,9 +16,15 @@ class ViewController: UIViewController {
     private var spectrumView: SoundSpectrumView?
     
     private var timer: Timer?
+    
+    private var isOrgPlayer: Bool = false
+    private var orgPlayer: AEAudioFilePlayer!
+    
     private var progressValue: CGFloat = 0 {
         didSet {
-            timeLabel.text = "\(Int(progressValue))"
+            DispatchQueue.main.async {
+                self.timeLabel.text = "\(Int(self.progressValue))"
+            }
         }
     }
 
@@ -45,13 +52,27 @@ class ViewController: UIViewController {
         kbvm.configView(view: keyboardView)
         
         keyboardView.delegate = self
-        
+    }
+    
+    private func initPlayer() {
+        guard let player = self.spectrumView?.model.module else {return}
+        player.removeUponFinish = false
+        player.completionBlock = {
+            player.channelIsMuted = true
+        }
+        AEPlayerKit.shared.play(player: player)
+        self.orgPlayer = player
     }
     
     private func initTimer() {
-        let timer = Timer(timeInterval: 0.05, target: self, selector: #selector(updateProgress), userInfo: nil, repeats: true)
-        RunLoop.main.add(timer, forMode: .default)
+        let timer = Timer.scheduledTimer(timeInterval: 0.05, target: self, selector: #selector(self.updateProgress), userInfo: nil, repeats: true)
         self.timer = timer
+        
+//        if !self.isOrgPlayer {
+//            self.initPlayer()
+//        }else {
+//            self.orgPlayer.channelIsMuted = false
+//        }
     }
     
     @objc private func updateProgress() {
@@ -60,13 +81,16 @@ class ViewController: UIViewController {
         if progressValue > 33 {
            progressValue = 0
         }
-        
-        self.spectrumView?.updateProgress(second: Double(progressValue))
+        DispatchQueue.main.async {
+            self.spectrumView?.updateProgress(second: Double(self.progressValue))
+        }
     }
     
     private func pauseTimer() {
         timer?.invalidate()
         timer = nil
+        
+//        self.orgPlayer.channelIsMuted = true
     }
     
     @IBAction func play(_ sender: UIButton) {
@@ -82,6 +106,7 @@ class ViewController: UIViewController {
     }
     
     @IBAction func resset(_ sender: UIButton) {
+//        AEPlayerKit.shared.pause()
         spectrumView?.clearAllMarks()
     }
 }
@@ -91,17 +116,21 @@ extension ViewController: PlaySoundKeyboardViewDelegate {
         print("selected index = \(index)")
         
         if self.timer?.isValid ?? false {
-            let psvm = view.model.playsoundVms[index]
+            guard let psvm = view.model.playsoundVms[index].copy() as? PlaySoundViewModel else {return}
             psvm.userClickTimeOffset = Double(self.progressValue)
+            psvm.drawAnimate = true
             guard var ems = self.spectrumView?.model.effectMarks.playSoundItems else {return}
             ems.append(psvm)
             let model = self.spectrumView?.model
             model?.playsounds = ems
             self.spectrumView?.model = model
-        }else {
-            guard let module = view.model.playsoundVms[index].module else {return}
-            AEPlayerKit.shared.play(player: module)
+            print("弹奏加1")
+            print("model?.playsounds.count = \(model?.playsounds.count)")
         }
+        
+        guard let module = view.model.playsoundVms[index].module else {return}
+        module.removeUponFinish = true
+        AEPlayerKit.shared.play(player: module)
         
     }
 }

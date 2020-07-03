@@ -17,6 +17,10 @@ class SoundEffectViewModel {
         self.playSoundsColorIndex()
     }
     
+    public func setPlaySounds(playSounds: [PlaySoundViewModel]) {
+        self.playSounds = playSounds
+    }
+    
     public var playSoundItems: [PlaySoundViewModel] {
         return self.playSounds
     }

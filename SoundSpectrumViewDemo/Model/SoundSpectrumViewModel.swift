@@ -44,7 +44,7 @@ class SoundSpectrumViewModel {
         return module?.regionDuration ?? 0
     }
     
-    private var module: AEAudioFilePlayer? {
+    public var module: AEAudioFilePlayer? {
         guard let url = audioURL else { return nil }
         return try? AEAudioFilePlayer(url: url)
     }

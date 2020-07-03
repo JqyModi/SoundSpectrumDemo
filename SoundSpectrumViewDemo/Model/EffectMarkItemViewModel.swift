@@ -19,10 +19,14 @@ class EffectMarkItemViewModel {
     private var playSound: PlaySoundViewModel
     private var containerViewHeight: CGFloat
     
+    public var drawAnimate: Bool = false
+    
     init(playSound: PlaySoundViewModel, lineCount: Int, containerViewHeight: CGFloat) {
         self.playSound = playSound
         self.lineCount = lineCount
         self.containerViewHeight = containerViewHeight
+        // 动画
+        self.drawAnimate = playSound.drawAnimate
     }
     
     public var playSoundVM: PlaySoundViewModel {
