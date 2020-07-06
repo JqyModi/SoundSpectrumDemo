@@ -69,24 +69,30 @@ class ViewController: UIViewController {
     }
     
     private func initTimer() {
-        let timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.updateProgress), userInfo: nil, repeats: true)
-        self.timer = timer
-        
-        if !self.isOrgPlayer {
-            self.isOrgPlayer = true
-            self.initPlayer()
-        }else {
-            self.orgPlayer.regionStartTime = TimeInterval(self.progressValue)
-            self.orgPlayer.channelIsPlaying = true
+        DispatchQueue.global().async {
+            if self.timer == nil {
+                let timer = Timer.scheduledTimer(timeInterval: 0.05, target: self, selector: #selector(self.updateProgress), userInfo: nil, repeats: true)
+                self.timer = timer
+            }
+            
+            if !self.isOrgPlayer {
+                self.isOrgPlayer = true
+                self.initPlayer()
+            }else {
+                self.orgPlayer.currentTime = TimeInterval(self.progressValue)
+                self.orgPlayer.channelIsPlaying = true
+            }
+            // 开启定时器
+            RunLoop.current.run()
         }
     }
     
     @objc private func updateProgress() {
-        progressValue += 1
+        progressValue = CGFloat(self.orgPlayer.currentTime)
         print("progress: \(progressValue)")
-        if progressValue > self.orgDuration {
-            progressValue = 0
-            self.stopTimer()
+        if progressValue == 0 {
+//            progressValue = 0
+            self.initTimer()
         }
         DispatchQueue.main.async {
             self.spectrumView?.updateProgress(second: Double(self.progressValue))
@@ -97,7 +103,7 @@ class ViewController: UIViewController {
         timer?.invalidate()
         timer = nil
         
-        self.orgPlayer.channelIsPlaying = false
+        self.orgPlayer?.channelIsPlaying = false
     }
     
     private func stopTimer() {
@@ -108,8 +114,8 @@ class ViewController: UIViewController {
     }
     
     private func resetOrgPlayer() {
-        self.orgPlayer.regionStartTime = 0
-        self.orgPlayer.channelIsPlaying = false
+        self.orgPlayer?.currentTime = 0
+        self.orgPlayer?.channelIsPlaying = false
     }
     
     @IBAction func play(_ sender: UIButton) {
@@ -141,6 +147,7 @@ extension ViewController: PlaySoundKeyboardViewDelegate {
         if self.timer?.isValid ?? false {
             guard let psvm = view.model.playsoundVms[index].copy() as? PlaySoundViewModel else {return}
             psvm.userClickTimeOffset = Double(self.progressValue)
+            print("userClickTimeOffset = \(psvm.userClickTimeOffset)")
             psvm.drawAnimate = true
             guard var ems = self.spectrumView?.model.effectMarks.playSoundItems else {return}
             ems.append(psvm)
@@ -157,7 +164,12 @@ extension ViewController: PlaySoundKeyboardViewDelegate {
 }
 
 extension ViewController: SoundSpectrumViewDelegate {
-    func soundSpectrumView(view: SoundSpectrumView, seekTo: Double) {
-        self.progressValue = CGFloat(seekTo)
+    func soundSpectrumView(view: SoundSpectrumView, seekTo: Double, isDraging: Bool) {
+        if isDraging {
+            self.stopTimer()
+        }
+        if !(self.timer?.isValid ?? false) {
+            self.progressValue = CGFloat(seekTo)
+        }
     }
 }

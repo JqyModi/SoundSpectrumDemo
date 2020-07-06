@@ -17,13 +17,13 @@ public func randomCGFloatNumber(lower: CGFloat = 0,upper: CGFloat = 1) -> CGFloa
 
 protocol SoundSpectrumViewDelegate: class {
 //    func soundSpectrumView(seekBegain view: SoundSpectrumView)
-    func soundSpectrumView(view: SoundSpectrumView, seekTo: Double)
+    func soundSpectrumView(view: SoundSpectrumView, seekTo: Double, isDraging: Bool)
 //    func soundSpectrumView(seekEnd view: SoundSpectrumView)
 }
 
 class SoundSpectrumView: UIView {
     
-    private var widthPerSecond: CGFloat = 50
+    private var widthPerSecond: CGFloat = 30
     private var audionDuration: TimeInterval = 33
     private var cursorLeftOffset: CGFloat = 93.75
     private var cursorColor: UIColor = .red
@@ -194,13 +194,15 @@ class SoundSpectrumView: UIView {
         let leftOffset = CGFloat(cpro)*self.maxScrollWidth
 
         if leftOffset.isEqual(to: 0) {
-            self.scrollView.contentOffset.x = 0
+            self.scrollView.contentOffset.x = -self.cursorLeftOffset
         }else {
-            DispatchQueue.main.async {
-                UIView.animate(withDuration: 1, delay: 0, options: UIView.AnimationOptions.curveLinear, animations: {
-                        self.scrollView.contentOffset.x = leftOffset
-                }, completion: nil)
-            }
+//            DispatchQueue.main.async {
+//                UIView.animate(withDuration: 1, delay: 0, options: UIView.AnimationOptions.curveLinear, animations: {
+//                    self.scrollView.contentOffset.x = leftOffset-self.cursorLeftOffset
+//                }, completion: nil)
+//            }
+//            self.scrollView.contentOffset.x = leftOffset-self.cursorLeftOffset
+            self.scrollView.setContentOffset(CGPoint(x: leftOffset-self.cursorLeftOffset, y: 0), animated: false)
         }
         
         // 随机弹奏
@@ -232,7 +234,9 @@ class SoundSpectrumView: UIView {
 }
 extension SoundSpectrumView: UIScrollViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        let timeOffset = Double(scrollView.contentOffset.x/scrollView.contentSize.width) * self.audionDuration
-        self.delegate?.soundSpectrumView(view: self, seekTo: timeOffset)
+        let ratio = Double((scrollView.contentOffset.x+self.cursorLeftOffset)/scrollView.contentSize.width)
+        print("ratio = \(ratio)")
+        let timeOffset = ratio * self.audionDuration
+        self.delegate?.soundSpectrumView(view: self, seekTo: timeOffset, isDraging: scrollView.isDragging)
     }
 }
