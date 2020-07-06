@@ -24,6 +24,16 @@ class PlaySoundKeyboardView: UIView {
         case Horizontal, Vertical
     }
     
+    private let segmentHeight: CGFloat = 32.ratioWidth
+    private let segmentControlHeight: CGFloat = 28.ratioWidth
+    private let indicatorWidth: CGFloat = 10
+    private let indicatorHeight: CGFloat = 1
+    private static let segmentTitleFontSize: CGFloat = 14
+    private let segmentTitleSelectedColor: UIColor = UIColor(red: 0.51, green: 0.33, blue: 0.94, alpha: 1)
+    private let segmentTitleNormalColor: UIColor = .white
+    private let segmentTitleSelectedFont: UIFont = UIFont.systemFont(ofSize: segmentTitleFontSize, weight: .heavy)
+    private let segmentTitleNormalFont: UIFont = UIFont.systemFont(ofSize: segmentTitleFontSize, weight: .medium)
+    
     private let sectionLeftOffset: CGFloat = 15
     private let sectionTopOffset: CGFloat = 15
     private var itemWidth: CGFloat = 82.5
@@ -45,6 +55,8 @@ class PlaySoundKeyboardView: UIView {
     
     private var pageSegmentedView: JXSegmentedView!
     private var pageSegmentedDataSource: JXSegmentedTitleDataSource!
+    
+    private var sysSegmentView: UISegmentedControl!
     
     private var segmentTitles: [String] = []
     
@@ -94,7 +106,8 @@ class PlaySoundKeyboardView: UIView {
         self.initSegmentView()
         self.initScrollView()
         self.setupScollView()
-        self.initPageSegmentView()
+//        self.initPageSegmentView()
+        self.initPageSegmentViewSystem()
     }
     
     private func initDatas() {
@@ -122,7 +135,7 @@ class PlaySoundKeyboardView: UIView {
     
     private func initSegmentView() {
         segmentedView = JXSegmentedView()
-        let frame = CGRect(x: 0, y: 0, width: self.bounds.width, height: 48)
+        let frame = CGRect(x: 0, y: 0, width: self.bounds.width, height: self.segmentHeight)
         segmentedView.frame = frame
         segmentedView.delegate = self
         self.addSubview(self.segmentedView)
@@ -131,24 +144,31 @@ class PlaySoundKeyboardView: UIView {
         segmentedDataSource = JXSegmentedTitleDataSource()
         //配置数据源相关配置属性
         segmentedDataSource.titles = self.segmentTitles
+        
+        segmentedDataSource.titleNormalColor = self.segmentTitleNormalColor
+        segmentedDataSource.titleSelectedColor = self.segmentTitleSelectedColor
+        
         segmentedDataSource.isTitleColorGradientEnabled = true
         //关联dataSource
         segmentedView.dataSource = self.segmentedDataSource
         
         let indicator = JXSegmentedIndicatorLineView()
-        indicator.indicatorWidth = 20
+        indicator.indicatorWidth = self.indicatorWidth
+        indicator.indicatorHeight = self.indicatorHeight
+        indicator.indicatorColor = self.segmentTitleSelectedColor
         segmentedView.indicators = [indicator]
     }
     
     private func initPageSegmentView() {
         let pageWidth: CGFloat = self.bounds.width
-        let pageHeight: CGFloat = 48
+        let pageHeight: CGFloat = self.segmentHeight
         let x = (self.bounds.width-pageWidth)/2
-        let y = (self.bounds.height-pageHeight-15)
+        let y = (self.bounds.height-pageHeight)
         let frame = CGRect(x: x, y: y, width: pageWidth, height: pageHeight)
         pageSegmentedView = JXSegmentedView()
         pageSegmentedView.frame = frame
         pageSegmentedView.delegate = self
+        pageSegmentedView.backgroundColor = UIColor(red: 0.46, green: 0.46, blue: 0.5, alpha: 0.24)
         self.addSubview(self.pageSegmentedView)
         
         //segmentedDataSource一定要通过属性强持有，不然会被释放掉
@@ -159,9 +179,33 @@ class PlaySoundKeyboardView: UIView {
         //关联dataSource
         pageSegmentedView.dataSource = self.pageSegmentedDataSource
         
-        let indicator = JXSegmentedIndicatorLineView()
-        indicator.indicatorWidth = 20
+        let indicator = JXSegmentedIndicatorBackgroundView()
+        indicator.indicatorHeight = 24
+        indicator.indicatorWidth = 115
+        indicator.indicatorCornerRadius = 8.91
+        indicator.indicatorColor = UIColor(red: 0.38, green: 0.38, blue: 0.4, alpha: 1)
         pageSegmentedView.indicators = [indicator]
+    }
+    
+    private func initPageSegmentViewSystem() {
+        let margin: CGFloat = self.sectionLeftOffset
+        let pageWidth: CGFloat = self.bounds.width-2*margin
+        let pageHeight: CGFloat = self.segmentControlHeight
+        let x = (self.bounds.width-pageWidth)/2
+        let y = (self.bounds.height-pageHeight)
+        let frame = CGRect(x: x, y: y, width: pageWidth, height: pageHeight)
+        sysSegmentView = UISegmentedControl(frame: frame)
+        sysSegmentView.selectedSegmentTintColor = UIColor(red: 0.38, green: 0.38, blue: 0.4, alpha: 1)
+        sysSegmentView.backgroundColor = UIColor(red: 0.46, green: 0.46, blue: 0.5, alpha: 0.24)
+        self.addSubview(self.sysSegmentView)
+        sysSegmentView.setTitleTextAttributes([NSAttributedString.Key.foregroundColor : UIColor.white, NSAttributedString.Key.font: UIFont.systemFont(ofSize: 13)], for: .normal)
+        sysSegmentView.addTarget(self, action: #selector(self.sysSegmentValueChange(sender:)), for: .valueChanged)
+    }
+    
+    @objc
+    private func sysSegmentValueChange(sender: UISegmentedControl) {
+        let point = CGPoint(x: CGFloat(sender.selectedSegmentIndex)*self.bounds.width, y: 0)
+        self.setupScrollViewContentOffset(point: point)
     }
     
     private func setupSegmentTitles() {
@@ -171,7 +215,7 @@ class PlaySoundKeyboardView: UIView {
     }
     
     private func initScrollView() {
-        let scrollView = UIScrollView(frame: CGRect(x: 0, y: 48, width: self.bounds.width, height: self.bounds.height-48))
+        let scrollView = UIScrollView(frame: CGRect(x: 0, y: self.segmentHeight, width: self.bounds.width, height: self.bounds.height-self.segmentHeight))
         self.addSubview(scrollView)
         scrollView.backgroundColor = .lightText
         self.scrollView = scrollView
@@ -321,9 +365,19 @@ class PlaySoundKeyboardView: UIView {
     
     /// 设置翻页标题
     private func setupPageSegmentTitles() {
-        self.pageSegmentedDataSource.titles = self.pageSegmentTitles(pageCount: self.scrollPage+1)
-        self.pageSegmentedDataSource.reloadData(selectedIndex: self.scrollPage)
-        self.pageSegmentedView.reloadData()
+        
+        let pageTitles = self.pageSegmentTitles(pageCount: self.scrollPage+1)
+        
+//        self.pageSegmentedDataSource.titles = pageTitles
+//        self.pageSegmentedDataSource.reloadData(selectedIndex: self.scrollPage)
+//        self.pageSegmentedView.reloadData()
+        
+        self.sysSegmentView.removeAllSegments()
+        for item in pageTitles.enumerated() {
+            self.sysSegmentView.insertSegment(withTitle: item.element, at: item.offset, animated: true)
+//            self.sysSegmentView.setTitle(item.element, forSegmentAt: item.offset)
+        }
+        self.sysSegmentView.selectedSegmentIndex = self.scrollPage
     }
     
     /// 翻页titles
@@ -370,17 +424,19 @@ class PlaySoundKeyboardView: UIView {
         self.initItemList(positions: self.itemPos, titles: self.itemTitles)
         self.setupPageSegmentTitles()
         self.scrollView.contentSize = self.scrollContentSize()
-        self.pageSegmentedView.selectItemAt(index: 0)
-        self.pageSegmentedView.reloadData()
+//        self.pageSegmentedView.selectItemAt(index: 0)
+//        self.pageSegmentedView.reloadData()
+        self.sysSegmentView.selectedSegmentIndex = 0
     }
 
 }
 extension PlaySoundKeyboardView: JXSegmentedViewDelegate {
     func segmentedView(_ segmentedView: JXSegmentedView, didSelectedItemAt index: Int) {
-        if segmentedView.isEqual(self.pageSegmentedView) {
-            let point = CGPoint(x: CGFloat(segmentedView.selectedIndex)*self.bounds.width, y: 0)
-            self.setupScrollViewContentOffset(point: point)
-        }else if segmentedView.isEqual(self.segmentedView) {
+//        if segmentedView.isEqual(self.pageSegmentedView) {
+//            let point = CGPoint(x: CGFloat(segmentedView.selectedIndex)*self.bounds.width, y: 0)
+//            self.setupScrollViewContentOffset(point: point)
+//        }else
+            if segmentedView.isEqual(self.segmentedView) {
             
             let newTitles = self.randomUpperLetters()
             var pos = [Int]()
@@ -401,6 +457,7 @@ extension PlaySoundKeyboardView: JXSegmentedViewDelegate {
 extension PlaySoundKeyboardView: UIScrollViewDelegate {
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         let scrollPage = scrollView.contentOffset.x/self.bounds.width
-        self.pageSegmentedView.selectItemAt(index: Int(scrollPage))
+//        self.pageSegmentedView.selectItemAt(index: Int(scrollPage))
+        self.sysSegmentView.selectedSegmentIndex = Int(scrollPage)
     }
 }

@@ -122,6 +122,8 @@
 		C599F9A724AC8C0400159307 /* EffectMarkItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C599F9A624AC8C0400159307 /* EffectMarkItemViewModel.swift */; };
 		C599F9AA24ADBC2E00159307 /* AEPlayerKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = C599F9A924ADBC2E00159307 /* AEPlayerKit.swift */; };
 		C599F9AE24ADEBD400159307 /* KeyboardItemBgView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C599F9AD24ADEBD400159307 /* KeyboardItemBgView.swift */; };
+		C599F9B124B3352900159307 /* RecordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C599F9B024B3352900159307 /* RecordView.swift */; };
+		C599F9B324B3356E00159307 /* RecordView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C599F9B224B3356E00159307 /* RecordView.xib */; };
 		C59EEFFA249C71D7004833E4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C59EEFF9249C71D7004833E4 /* AppDelegate.swift */; };
 		C59EEFFC249C71D7004833E4 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C59EEFFB249C71D7004833E4 /* SceneDelegate.swift */; };
 		C59EEFFE249C71D7004833E4 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C59EEFFD249C71D7004833E4 /* ViewController.swift */; };
@@ -272,6 +274,8 @@
 		C599F9A624AC8C0400159307 /* EffectMarkItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EffectMarkItemViewModel.swift; sourceTree = "<group>"; };
 		C599F9A924ADBC2E00159307 /* AEPlayerKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AEPlayerKit.swift; sourceTree = "<group>"; };
 		C599F9AD24ADEBD400159307 /* KeyboardItemBgView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardItemBgView.swift; sourceTree = "<group>"; };
+		C599F9B024B3352900159307 /* RecordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordView.swift; sourceTree = "<group>"; };
+		C599F9B224B3356E00159307 /* RecordView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RecordView.xib; sourceTree = "<group>"; };
 		C59EEFF6249C71D7004833E4 /* SoundSpectrumViewDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SoundSpectrumViewDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C59EEFF9249C71D7004833E4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C59EEFFB249C71D7004833E4 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -3672,6 +3676,15 @@
 			path = BgView;
 			sourceTree = "<group>";
 		};
+		C599F9AF24B3350500159307 /* RecordView */ = {
+			isa = PBXGroup;
+			children = (
+				C599F9B024B3352900159307 /* RecordView.swift */,
+				C599F9B224B3356E00159307 /* RecordView.xib */,
+			);
+			path = RecordView;
+			sourceTree = "<group>";
+		};
 		C59EEFED249C71D7004833E4 = {
 			isa = PBXGroup;
 			children = (
@@ -3697,6 +3710,7 @@
 		C59EEFF8249C71D7004833E4 /* SoundSpectrumViewDemo */ = {
 			isa = PBXGroup;
 			children = (
+				C599F9AF24B3350500159307 /* RecordView */,
 				C599F9A824ADBC1100159307 /* Player */,
 				C599F99F24AC384500159307 /* Model */,
 				C599F8DD24AC30C200159307 /* Res */,
@@ -7061,6 +7075,7 @@
 				C599F95824AC30D700159307 /* Piano6.mp3 in Resources */,
 				C599F94724AC30D700159307 /* Piano28.mp3 in Resources */,
 				C599F96624AC30D700159307 /* Piano62.mp3 in Resources */,
+				C599F9B324B3356E00159307 /* RecordView.xib in Resources */,
 				C599F96524AC30D700159307 /* Piano76.mp3 in Resources */,
 				C599F99824AC30D800159307 /* Piano22.mp3 in Resources */,
 				C599F97D24AC30D700159307 /* Piano55.mp3 in Resources */,
@@ -7245,6 +7260,7 @@
 				C599F8DB24A9DC3E00159307 /* PlaySoundKeyboardItemView.swift in Sources */,
 				C599F8D324A9C21300159307 /* PlaySoundKeyboardView.swift in Sources */,
 				C554C25624A4650300323A8E /* SoundEffectView.swift in Sources */,
+				C599F9B124B3352900159307 /* RecordView.swift in Sources */,
 				C599F9AA24ADBC2E00159307 /* AEPlayerKit.swift in Sources */,
 				C59EEFFE249C71D7004833E4 /* ViewController.swift in Sources */,
 				C53797FD249CA67F00AE50E4 /* SoundWaveView.swift in Sources */,

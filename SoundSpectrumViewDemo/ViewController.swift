@@ -9,10 +9,50 @@
 import UIKit
 import TheAmazingAudioEngine
 
+public let SCREEN_WIDTH: CGFloat = UIScreen.main.bounds.width
+public let SCREEN_HEIGHT: CGFloat = UIScreen.main.bounds.height
+
+extension CGFloat {
+    var ratioWidth: CGFloat {
+        return SCREEN_WIDTH * self/375.0
+    }
+    
+    var ratioHeight: CGFloat {
+        return SCREEN_HEIGHT * self/677.0
+    }
+}
+
+extension Int {
+    var ratioWidth: CGFloat {
+        return SCREEN_WIDTH * CGFloat(self)/375.0
+    }
+    
+    var ratioHeight: CGFloat {
+        return SCREEN_HEIGHT * CGFloat(self)/677.0
+    }
+}
+
 class ViewController: UIViewController {
     
     @IBOutlet weak var timeLabel: UILabel!
     @IBOutlet weak var playBtn: UIButton!
+    
+    private let soundSpectrumViewHeight: CGFloat = 120.ratioWidth
+    private var navHeight: CGFloat = 64
+    
+    private let segmentHeight: CGFloat = 32.ratioWidth
+    private let segmentControlHeight: CGFloat = 28.ratioWidth
+    
+    private let sectionLeftOffset: CGFloat = 15
+    private let sectionTopOffset: CGFloat = 15
+    private var itemWidth: CGFloat = 82.5
+    private var itemHeight: CGFloat = 82.5
+    private let itemOffset: CGFloat = 5
+    
+    private let totalRow: Int = 3
+    private let totalColumn: Int = 4
+    
+    private var keyboardViewHeight: CGFloat = 400
     
     private var spectrumView: SoundSpectrumView?
     
@@ -33,13 +73,28 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.initParams()
         self.initViews()
+    }
+    
+    private func initParams() {
+        self.navHeight = UIApplication.shared.statusBarFrame.height
+        
+        let tOffset = (self.sectionLeftOffset*2+self.itemOffset*CGFloat(self.totalColumn-1))
+        let itemWidth = (self.view.bounds.width-tOffset)/CGFloat(self.totalColumn)
+        self.itemWidth = itemWidth
+        self.itemHeight = itemWidth
+        
+        let tVOffset = self.sectionTopOffset*2+CGFloat(self.totalRow-1)*self.itemOffset
+        
+        let tSegmentHeight = self.segmentHeight + self.segmentControlHeight
+        self.keyboardViewHeight = itemHeight*CGFloat(self.totalRow)+tVOffset+tSegmentHeight
     }
 
     private func initViews() {
         self.view.backgroundColor = .white
         let soundwave = Bundle.main.loadNibNamed(String(describing: SoundSpectrumView.classForCoder()), owner: nil, options: nil)?.last as! SoundSpectrumView
-        soundwave.frame = CGRect(x: 0, y: 100, width: self.view.bounds.width, height: 100)
+        soundwave.frame = CGRect(x: 0, y: self.navHeight, width: self.view.bounds.width, height: self.soundSpectrumViewHeight)
         self.view.addSubview(soundwave)
         self.spectrumView = soundwave
         
@@ -48,7 +103,7 @@ class ViewController: UIViewController {
         
         soundwave.delegate = self
         
-        let kbFrame = CGRect(x: 0, y: 200, width: self.view.bounds.width, height: 400)
+        let kbFrame = CGRect(x: 0, y: self.navHeight+self.soundSpectrumViewHeight, width: self.view.bounds.width, height: self.keyboardViewHeight)
         let keyboardView = PlaySoundKeyboardView(frame: kbFrame)
         self.view.addSubview(keyboardView)
         let kbvm = PlaySoundKeyboardViewModel()

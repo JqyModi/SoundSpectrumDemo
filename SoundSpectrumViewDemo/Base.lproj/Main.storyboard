@@ -15,45 +15,57 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JuP-Ef-NtL">
-                                <rect key="frame" x="334" y="782" width="50" height="50"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="riU-mU-qX6">
+                                <rect key="frame" x="0.0" y="773.5" width="414" height="78.5"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iHc-cA-iFT">
+                                        <rect key="frame" x="70" y="14.5" width="50" height="50"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="50" id="Sub-LP-wzW"/>
+                                            <constraint firstAttribute="height" constant="50" id="gzd-IA-eBJ"/>
+                                        </constraints>
+                                        <state key="normal" title="Resset"/>
+                                        <connections>
+                                            <action selector="resset:" destination="BYZ-38-t0r" eventType="touchUpInside" id="mKv-UV-k4u"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JuP-Ef-NtL">
+                                        <rect key="frame" x="294" y="14.5" width="50" height="50"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="50" id="Kem-kK-eVU"/>
+                                            <constraint firstAttribute="width" constant="50" id="mLu-7M-Mfz"/>
+                                        </constraints>
+                                        <state key="normal" title="Play"/>
+                                        <connections>
+                                            <action selector="play:" destination="BYZ-38-t0r" eventType="touchUpInside" id="vEF-pm-Q9A"/>
+                                        </connections>
+                                    </button>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uKT-va-w7T">
+                                        <rect key="frame" x="136" y="29" width="142" height="21"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="50" id="Kem-kK-eVU"/>
-                                    <constraint firstAttribute="width" constant="50" id="mLu-7M-Mfz"/>
+                                    <constraint firstItem="uKT-va-w7T" firstAttribute="leading" secondItem="iHc-cA-iFT" secondAttribute="trailing" constant="16" id="2BJ-UE-44N"/>
+                                    <constraint firstItem="iHc-cA-iFT" firstAttribute="leading" secondItem="riU-mU-qX6" secondAttribute="leading" constant="70" id="5gF-yo-X1y"/>
+                                    <constraint firstItem="uKT-va-w7T" firstAttribute="centerX" secondItem="riU-mU-qX6" secondAttribute="centerX" id="7Ho-dH-YqL"/>
+                                    <constraint firstItem="JuP-Ef-NtL" firstAttribute="leading" secondItem="uKT-va-w7T" secondAttribute="trailing" constant="16" id="7yT-g3-lUc"/>
+                                    <constraint firstAttribute="trailing" secondItem="JuP-Ef-NtL" secondAttribute="trailing" constant="70" id="DA1-Jw-PnN"/>
+                                    <constraint firstItem="uKT-va-w7T" firstAttribute="centerY" secondItem="riU-mU-qX6" secondAttribute="centerY" id="aWg-Aq-Wem"/>
+                                    <constraint firstItem="JuP-Ef-NtL" firstAttribute="centerY" secondItem="uKT-va-w7T" secondAttribute="centerY" id="ixH-U0-fJo"/>
+                                    <constraint firstItem="iHc-cA-iFT" firstAttribute="centerY" secondItem="uKT-va-w7T" secondAttribute="centerY" id="ndc-Kw-fUM"/>
+                                    <constraint firstAttribute="height" constant="78.5" id="ufO-q6-NPf"/>
                                 </constraints>
-                                <state key="normal" title="Play"/>
-                                <connections>
-                                    <action selector="play:" destination="BYZ-38-t0r" eventType="touchUpInside" id="vEF-pm-Q9A"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iHc-cA-iFT">
-                                <rect key="frame" x="30" y="782" width="50" height="50"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="50" id="Sub-LP-wzW"/>
-                                    <constraint firstAttribute="height" constant="50" id="gzd-IA-eBJ"/>
-                                </constraints>
-                                <state key="normal" title="Resset"/>
-                                <connections>
-                                    <action selector="resset:" destination="BYZ-38-t0r" eventType="touchUpInside" id="mKv-UV-k4u"/>
-                                </connections>
-                            </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uKT-va-w7T">
-                                <rect key="frame" x="96" y="797" width="222" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
-                            <constraint firstItem="JuP-Ef-NtL" firstAttribute="leading" secondItem="uKT-va-w7T" secondAttribute="trailing" constant="16" id="AxX-Mg-UfP"/>
-                            <constraint firstItem="uKT-va-w7T" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="BNp-j1-9Zg"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="iHc-cA-iFT" secondAttribute="bottom" constant="30" id="Ecy-T0-XkR"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="uKT-va-w7T" secondAttribute="bottom" constant="44" id="FDn-oS-XYy"/>
-                            <constraint firstItem="uKT-va-w7T" firstAttribute="leading" secondItem="iHc-cA-iFT" secondAttribute="trailing" constant="16" id="IWy-UR-s8w"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="JuP-Ef-NtL" secondAttribute="trailing" constant="30" id="Qsn-BQ-bOA"/>
-                            <constraint firstItem="iHc-cA-iFT" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="30" id="c46-e9-UFO"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="JuP-Ef-NtL" secondAttribute="bottom" constant="30" id="hDu-ih-M6N"/>
+                            <constraint firstItem="riU-mU-qX6" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="Q8e-u2-woX"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="riU-mU-qX6" secondAttribute="trailing" id="Q9K-8z-C6y"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="riU-mU-qX6" secondAttribute="bottom" constant="10" id="ecJ-fR-iF9"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
