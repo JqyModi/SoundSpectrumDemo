@@ -12,8 +12,8 @@ class EffectMarkItemViewModel {
     
     private var lineCount: Int = 1
     
-    private let lineOffset: CGFloat = 8
-    private let markHeight: CGFloat = 8
+    private let lineOffset: CGFloat = 8.ratioHeight
+    private let markHeight: CGFloat = 8.ratioHeight
     private let widthPerSecond: Double = 30
     
     private var playSound: PlaySoundViewModel

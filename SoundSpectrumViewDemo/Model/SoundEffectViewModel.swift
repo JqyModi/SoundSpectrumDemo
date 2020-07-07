@@ -31,7 +31,7 @@ class SoundEffectViewModel {
         }
     }
     
-    public var containerViewHeight: CGFloat = 100
+    public var containerViewHeight: CGFloat = 120.ratioHeight
     
     public var lineCount: Int {
         let sortLevels = self.playSounds.compactMap { (psvm) -> Int in

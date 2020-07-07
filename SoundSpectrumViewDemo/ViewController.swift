@@ -8,6 +8,7 @@
 
 import UIKit
 import TheAmazingAudioEngine
+import UICircularProgressRing
 
 public let SCREEN_WIDTH: CGFloat = UIScreen.main.bounds.width
 public let SCREEN_HEIGHT: CGFloat = UIScreen.main.bounds.height
@@ -34,14 +35,13 @@ extension Int {
 
 class ViewController: UIViewController {
     
-    @IBOutlet weak var timeLabel: UILabel!
-    @IBOutlet weak var playBtn: UIButton!
+    private var timerBar: UICircularProgressRing!
     
-    private let soundSpectrumViewHeight: CGFloat = 120.ratioWidth
+    private let soundSpectrumViewHeight: CGFloat = 120.ratioHeight
     private var navHeight: CGFloat = 64
     
-    private let segmentHeight: CGFloat = 32.ratioWidth
-    private let segmentControlHeight: CGFloat = 28.ratioWidth
+    private let segmentHeight: CGFloat = 32.ratioHeight
+    private let segmentControlHeight: CGFloat = 28.ratioHeight
     
     private let sectionLeftOffset: CGFloat = 15
     private let sectionTopOffset: CGFloat = 15
@@ -54,7 +54,10 @@ class ViewController: UIViewController {
     
     private var keyboardViewHeight: CGFloat = 400
     
+    private let recordViewHeight: CGFloat = 78.ratioHeight
+    
     private var spectrumView: SoundSpectrumView?
+    private var recordView: RecordView?
     
     private var timer: Timer?
     
@@ -66,7 +69,7 @@ class ViewController: UIViewController {
     private var progressValue: CGFloat = 0 {
         didSet {
             DispatchQueue.main.async {
-                self.timeLabel.text = "\(Int(self.progressValue))"
+                self.updateTimerBar()
             }
         }
     }
@@ -77,8 +80,14 @@ class ViewController: UIViewController {
         self.initViews()
     }
     
+    private func updateTimerBar() {
+        self.recordView?.updateProgress(progress: self.progressValue)
+    }
+    
     private func initParams() {
-        self.navHeight = UIApplication.shared.statusBarFrame.height
+        let topBarHeight = UIApplication.shared.statusBarFrame.size.height +
+        (self.navigationController?.navigationBar.frame.height ?? 0.0)
+        self.navHeight = topBarHeight
         
         let tOffset = (self.sectionLeftOffset*2+self.itemOffset*CGFloat(self.totalColumn-1))
         let itemWidth = (self.view.bounds.width-tOffset)/CGFloat(self.totalColumn)
@@ -92,9 +101,10 @@ class ViewController: UIViewController {
     }
 
     private func initViews() {
-        self.view.backgroundColor = .white
-        let soundwave = Bundle.main.loadNibNamed(String(describing: SoundSpectrumView.classForCoder()), owner: nil, options: nil)?.last as! SoundSpectrumView
-        soundwave.frame = CGRect(x: 0, y: self.navHeight, width: self.view.bounds.width, height: self.soundSpectrumViewHeight)
+        self.view.backgroundColor = UIColor(red: 0.06, green: 0.05, blue: 0.1, alpha: 1)
+        
+        let sdFrame = CGRect(x: 0, y: self.navHeight, width: self.view.bounds.width, height: self.soundSpectrumViewHeight)
+        let soundwave = SoundSpectrumView(frame: sdFrame)
         self.view.addSubview(soundwave)
         self.spectrumView = soundwave
         
@@ -110,6 +120,19 @@ class ViewController: UIViewController {
         kbvm.configView(view: keyboardView)
         
         keyboardView.delegate = self
+        
+        self.initRecordView()
+    }
+    
+    private func initRecordView() {
+        let frame = CGRect(x: 0, y: self.navHeight+self.soundSpectrumViewHeight+self.keyboardViewHeight+20, width: view.bounds.width, height: self.recordViewHeight)
+        
+        guard let player = self.spectrumView?.model.module else {return}
+        let recordView = RecordView(frame: frame, maxValue: CGFloat(player.regionDuration))
+        self.view.addSubview(recordView)
+        
+        self.recordView = recordView
+        self.recordView?.delegate = self
     }
     
     private func initPlayer() {
@@ -173,26 +196,16 @@ class ViewController: UIViewController {
         self.orgPlayer?.channelIsPlaying = false
     }
     
-    @IBAction func play(_ sender: UIButton) {
-        if sender.isSelected {
-            sender.isSelected = false
-            sender.setTitle("Play", for: .normal)
-            self.pauseTimer()
-        }else {
-            sender.isSelected = true
-            sender.setTitle("Pause", for: .selected)
-            self.initTimer()
-        }
-    }
-    
     private func resetPlayBtn() {
-        self.playBtn.isSelected = false
-        self.playBtn.setTitle("Play", for: .normal)
+        self.recordView?.playReset()
     }
     
-    @IBAction func resset(_ sender: UIButton) {
-//        AEPlayerKit.shared.pause()
+    private func resetView() {
+        self.stopTimer()
+        self.progressValue = 0
+        self.spectrumView?.updateProgress(second: Double(self.progressValue))
         spectrumView?.clearAllMarks()
+        self.recordView?.resetView()
     }
 }
 
@@ -221,10 +234,30 @@ extension ViewController: PlaySoundKeyboardViewDelegate {
 extension ViewController: SoundSpectrumViewDelegate {
     func soundSpectrumView(view: SoundSpectrumView, seekTo: Double, isDraging: Bool) {
         if isDraging {
-            self.stopTimer()
+            self.pauseTimer()
+            if !(self.timer?.isValid ?? false) {
+                self.recordView?.playPause()
+            }
         }
         if !(self.timer?.isValid ?? false) {
             self.progressValue = CGFloat(seekTo)
         }
+    }
+}
+extension ViewController: RecordViewDelegate {
+    func recordView(view: RecordView, startTap sender: UIButton) {
+        if sender.isSelected {
+            self.initTimer()
+        }else {
+            self.pauseTimer()
+        }
+    }
+    
+    func recordView(view: RecordView, restartTap sender: UIStackView) {
+        self.resetView()
+    }
+    
+    func recordView(view: RecordView, finishedTap sender: UIStackView) {
+        print("finished")
     }
 }

@@ -32,7 +32,7 @@ class SoundSpectrumView: UIView {
     
     public weak var delegate: SoundSpectrumViewDelegate?
     
-    @IBOutlet weak var scrollView: UIScrollView!
+    private var scrollView: UIScrollView!
     
     private var chordPlayView: ChordPlayView!
     private var effectView: SoundEffectView!
@@ -51,15 +51,21 @@ class SoundSpectrumView: UIView {
         }
     }
     
-    override func awakeFromNib() {
-        super.awakeFromNib()
+    override init(frame: CGRect) {
+        super.init(frame: frame)
         self.initScrollView()
         self.setupScrollView()
         self.initViews()
         self.initDatas()
     }
     
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     private func initScrollView() {
+        self.scrollView = UIScrollView(frame: self.bounds)
+        self.addSubview(self.scrollView)
         self.scrollView.backgroundColor = .clear
         self.scrollView.showsVerticalScrollIndicator = false
         self.scrollView.showsHorizontalScrollIndicator = false
@@ -67,7 +73,7 @@ class SoundSpectrumView: UIView {
     
     private func setupScrollView() {
         let edgeOffset: CGFloat = cursorLeftOffset
-        self.scrollView.contentInset = UIEdgeInsets(top: 0, left: edgeOffset, bottom: 0, right: UIScreen.main.bounds.width-edgeOffset)
+        self.scrollView.contentInset = UIEdgeInsets(top: 0, left: edgeOffset, bottom: 0, right: self.bounds.width-edgeOffset)
         self.scrollView.delegate = self
     }
     

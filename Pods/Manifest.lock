@@ -2,23 +2,27 @@ PODS:
   - DSWaveformImage (6.1.1)
   - JXSegmentedView (1.2.1)
   - TheAmazingAudioEngine (1.5.8)
+  - UICircularProgressRing (6.5.0)
 
 DEPENDENCIES:
   - DSWaveformImage
   - JXSegmentedView
   - TheAmazingAudioEngine
+  - UICircularProgressRing
 
 SPEC REPOS:
   trunk:
     - DSWaveformImage
     - JXSegmentedView
     - TheAmazingAudioEngine
+    - UICircularProgressRing
 
 SPEC CHECKSUMS:
   DSWaveformImage: 3c718a0cf99291887ee70d1d0c18d80101d3d9ce
   JXSegmentedView: 325e75456e450f0cee94835073652b94316c36bd
   TheAmazingAudioEngine: 24e382d9468283bb1b3f08df29b514aa522ef4fd
+  UICircularProgressRing: e6852e8f88e296cbbbe2720cccb55241acda6708
 
-PODFILE CHECKSUM: 870e277e82bb30f3267cee7f35c6a588666d176a
+PODFILE CHECKSUM: 3c98845978190909320ccc4c4dd5b7be82af7be6
 
 COCOAPODS: 1.8.4

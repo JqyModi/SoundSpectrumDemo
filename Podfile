@@ -10,6 +10,8 @@ target 'SoundSpectrumViewDemo' do
   pod "DSWaveformImage"
   pod 'JXSegmentedView'
   pod 'TheAmazingAudioEngine'
+#  pod 'MaterialDesignWidgets'
+  pod 'UICircularProgressRing'
 
   target 'SoundSpectrumViewDemoTests' do
     inherit! :search_paths

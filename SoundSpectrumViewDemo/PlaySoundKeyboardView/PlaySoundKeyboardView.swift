@@ -24,8 +24,8 @@ class PlaySoundKeyboardView: UIView {
         case Horizontal, Vertical
     }
     
-    private let segmentHeight: CGFloat = 32.ratioWidth
-    private let segmentControlHeight: CGFloat = 28.ratioWidth
+    private let segmentHeight: CGFloat = 32.ratioHeight
+    private let segmentControlHeight: CGFloat = 28.ratioHeight
     private let indicatorWidth: CGFloat = 10
     private let indicatorHeight: CGFloat = 1
     private static let segmentTitleFontSize: CGFloat = 14
@@ -101,7 +101,7 @@ class PlaySoundKeyboardView: UIView {
     }
     
     private func initViews() {
-        self.backgroundColor = UIColor(white: 0, alpha: 0.5)
+        self.backgroundColor = .clear
         self.removeAllMarks()
         self.initSegmentView()
         self.initScrollView()
@@ -217,7 +217,7 @@ class PlaySoundKeyboardView: UIView {
     private func initScrollView() {
         let scrollView = UIScrollView(frame: CGRect(x: 0, y: self.segmentHeight, width: self.bounds.width, height: self.bounds.height-self.segmentHeight))
         self.addSubview(scrollView)
-        scrollView.backgroundColor = .lightText
+        scrollView.backgroundColor = .clear
         self.scrollView = scrollView
     }
     
