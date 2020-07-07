@@ -149,7 +149,7 @@ class ViewController: UIViewController {
     private func initTimer() {
         DispatchQueue.global().async {
             if self.timer == nil {
-                let timer = Timer.scheduledTimer(timeInterval: 0.05, target: self, selector: #selector(self.updateProgress), userInfo: nil, repeats: true)
+                let timer = Timer.scheduledTimer(timeInterval: 0.01, target: self, selector: #selector(self.updateProgress), userInfo: nil, repeats: true)
                 self.timer = timer
             }
             

@@ -120,7 +120,7 @@ class PlaySoundViewModel: NSObject, NSCopying {
     /// 本地音频文件
     private class func soundResNames() -> [String] {
         var names = [String]()
-        for idx in 1...96 {
+        for idx in 1...12 {
             names.append("Piano\(idx).mp3")
         }
         return names

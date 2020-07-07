@@ -26,7 +26,7 @@ class SoundSpectrumView: UIView {
     private var widthPerSecond: CGFloat = 30
     private var audionDuration: TimeInterval = 33
     private var cursorLeftOffset: CGFloat = 93.75
-    private var cursorColor: UIColor = .red
+    private var cursorColor: UIColor = .white
     private var maxScrollWidth: CGFloat = 375
     private var audioURL: URL?
     
@@ -121,8 +121,9 @@ class SoundSpectrumView: UIView {
     
     private func initCursorView() {
         // cursorView
-        let cursor = UIView(frame: CGRect(x: self.cursorLeftOffset, y: 0, width: 1, height: self.bounds.height))
+        let cursor = UIView(frame: CGRect(x: self.cursorLeftOffset, y: 0, width: 2, height: self.bounds.height))
         cursor.backgroundColor = self.cursorColor
+        cursor.alpha = 0.8
         self.addSubview(cursor)
     }
     
