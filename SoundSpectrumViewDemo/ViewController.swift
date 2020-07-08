@@ -172,9 +172,7 @@ class ViewController: UIViewController {
 //            progressValue = 0
             self.initTimer()
         }
-        DispatchQueue.main.async {
-            self.spectrumView?.updateProgress(second: Double(self.progressValue))
-        }
+        self.spectrumView?.updateProgress(second: Double(self.progressValue))
     }
     
     private func pauseTimer() {
@@ -213,20 +211,24 @@ extension ViewController: PlaySoundKeyboardViewDelegate {
     func playSoundKeyboardView(view: PlaySoundKeyboardView, itemDidSelected index: Int) {
         
         if self.timer?.isValid ?? false {
-            guard let psvm = view.model.playsoundVms[index].copy() as? PlaySoundViewModel else {return}
-            psvm.userClickTimeOffset = Double(self.progressValue)
-            print("userClickTimeOffset = \(psvm.userClickTimeOffset)")
-            psvm.drawAnimate = true
-            guard var ems = self.spectrumView?.model.effectMarks.playSoundItems else {return}
-            ems.append(psvm)
-            let model = self.spectrumView?.model
-            model?.playsounds = ems
-            self.spectrumView?.model = model
+            DispatchQueue.global().async {
+                guard let psvm = view.model.playsoundVms[index].copy() as? PlaySoundViewModel else {return}
+                psvm.userClickTimeOffset = Double(self.progressValue)
+                print("userClickTimeOffset = \(psvm.userClickTimeOffset)")
+                psvm.drawAnimate = true
+                guard var ems = self.spectrumView?.model.effectMarks.playSoundItems else {return}
+                ems.append(psvm)
+                let model = self.spectrumView?.model
+                model?.playsounds = ems
+                self.spectrumView?.model = model
+            }
         }
         
-        guard let module = view.model.playsoundVms[index].module else {return}
-        module.removeUponFinish = true
-        AEPlayerKit.shared.play(player: module)
+        DispatchQueue.global().async {
+            guard let module = view.model.playsoundVms[index].module else {return}
+            module.removeUponFinish = true
+            AEPlayerKit.shared.play(player: module)
+        }
         
     }
 }

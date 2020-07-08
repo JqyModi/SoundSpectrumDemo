@@ -151,7 +151,9 @@ class SoundSpectrumView: UIView {
     }
     
     private func updateScrollContentSize() {
-        self.scrollView.contentSize = CGSize(width: self.maxScrollWidth, height: self.bounds.height)
+        DispatchQueue.main.async {
+            self.scrollView.contentSize = CGSize(width: self.maxScrollWidth, height: self.bounds.height)
+        }
 //        self.updateSubViewsHeight()
     }
     
@@ -201,7 +203,9 @@ class SoundSpectrumView: UIView {
         let leftOffset = CGFloat(cpro)*self.maxScrollWidth
 
         if leftOffset.isEqual(to: 0) {
-            self.scrollView.contentOffset.x = -self.cursorLeftOffset
+            DispatchQueue.main.async {
+                self.scrollView.contentOffset.x = -self.cursorLeftOffset
+            }
         }else {
 //            DispatchQueue.main.async {
 //                UIView.animate(withDuration: 1, delay: 0, options: UIView.AnimationOptions.curveLinear, animations: {
@@ -209,7 +213,9 @@ class SoundSpectrumView: UIView {
 //                }, completion: nil)
 //            }
 //            self.scrollView.contentOffset.x = leftOffset-self.cursorLeftOffset
-            self.scrollView.setContentOffset(CGPoint(x: leftOffset-self.cursorLeftOffset, y: 0), animated: false)
+            DispatchQueue.main.async {
+                self.scrollView.setContentOffset(CGPoint(x: leftOffset-self.cursorLeftOffset, y: 0), animated: false)
+            }
         }
         
         // 随机弹奏
@@ -218,7 +224,7 @@ class SoundSpectrumView: UIView {
     
     public func playEffects(second: Double) {
         self.recordPlaySound = nil
-        let rangeOffset: Double = 0.1
+        let rangeOffset: Double = 0.01
         let range = (second-rangeOffset...second+rangeOffset)
         model.effectMarks.markViewModels.forEach { (markItem) in
             if range.contains(markItem.timeOffset) {
@@ -228,9 +234,11 @@ class SoundSpectrumView: UIView {
                     return
                 }
                 
-                guard let player = markItem.playSoundVM.module else {return}
-                player.removeUponFinish = true
-                AEPlayerKit.shared.play(player: player)
+                DispatchQueue.global().async {
+                    guard let player = markItem.playSoundVM.module else {return}
+                    player.removeUponFinish = true
+                    AEPlayerKit.shared.play(player: player)
+                }
                 
                 self.recordPlaySound = markItem.playSoundVM
                 

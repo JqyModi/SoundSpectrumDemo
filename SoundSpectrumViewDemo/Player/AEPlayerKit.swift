@@ -34,7 +34,7 @@ class AEPlayerKit: NSObject {
         if let cplayer = self.existPlayer(player: player) {
             print("播放器已经存在")
 //            cplayer.play(atTime: 0)
-            cplayer.regionStartTime = 0
+            cplayer.currentTime = 0
             return
         }
         self.audioController.addChannels([player])

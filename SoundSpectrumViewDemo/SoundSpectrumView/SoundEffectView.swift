@@ -89,20 +89,23 @@ class SoundEffectView: UIView {
     }
     
     private func drawMark(markViewModel: EffectMarkItemViewModel, animate: Bool = false) {
-        guard let mark = EffectMarkItemViewModel.createMarkView() else {return}
-        mark.frame = markViewModel.markFrame()
-//        markViewModel.configView(view: mark)
-        let colors = self.lineIndexToColors(lineIndex: markViewModel.indexLevel)
-        if markViewModel.drawAnimate {
-            mark.setHeadColor(color: colors.head)
-            mark.setTailColor(color: colors.head)
-            UIView.animate(withDuration: 0.25) {
+        DispatchQueue.main.async {
+            guard let mark = EffectMarkItemViewModel.createMarkView() else {return}
+            mark.frame = markViewModel.markFrame()
+    //        markViewModel.configView(view: mark)
+            let colors = self.lineIndexToColors(lineIndex: markViewModel.indexLevel)
+            if markViewModel.drawAnimate {
+                mark.setHeadColor(color: colors.head)
+                mark.setTailColor(color: colors.head)
+                UIView.animate(withDuration: 0.25) {
+                    mark.setupColor(lineIndex: markViewModel.indexLevel)
+                }
+            }else {
                 mark.setupColor(lineIndex: markViewModel.indexLevel)
             }
-        }else {
-            mark.setupColor(lineIndex: markViewModel.indexLevel)
+        
+            self.addSubview(mark)
         }
-        self.addSubview(mark)
     }
     
     private func lineIndexToColors(lineIndex: Int) -> (head: UIColor, tail: UIColor) {
@@ -120,8 +123,10 @@ class SoundEffectView: UIView {
     }
     
     public func removeAllMark() {
-        self.subviews.forEach { (sub) in
-            sub.removeFromSuperview()
+        DispatchQueue.main.async {
+            self.subviews.forEach { (sub) in
+                sub.removeFromSuperview()
+            }
         }
     }
     
