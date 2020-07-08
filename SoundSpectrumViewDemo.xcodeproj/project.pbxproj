@@ -52,9 +52,6 @@
 		C5CF7ED024B486E7005942E3 /* Piano9.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = C5CF7EC424B486E6005942E3 /* Piano9.mp3 */; };
 		C5CF7ED124B486E7005942E3 /* Piano8.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = C5CF7EC524B486E7005942E3 /* Piano8.mp3 */; };
 		C5CF7ED224B486E7005942E3 /* Piano12.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = C5CF7EC624B486E7005942E3 /* Piano12.mp3 */; };
-		C5CF7ED724B5C1EF005942E3 /* SOEffectWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5CF7ED424B5C1EF005942E3 /* SOEffectWrapper.swift */; };
-		C5CF7ED824B5C1EF005942E3 /* SOSoundEffectModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5CF7ED524B5C1EF005942E3 /* SOSoundEffectModel.swift */; };
-		C5CF7ED924B5C1EF005942E3 /* SOType.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5CF7ED624B5C1EF005942E3 /* SOType.swift */; };
 		FD5FE2D3C842FADCD1844C9E /* Pods_SoundSpectrumViewDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2828302C616A22F53B6CA3F6 /* Pods_SoundSpectrumViewDemo.framework */; };
 /* End PBXBuildFile section */
 
@@ -3287,9 +3284,6 @@
 		C5CF7EC424B486E6005942E3 /* Piano9.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Piano9.mp3; sourceTree = "<group>"; };
 		C5CF7EC524B486E7005942E3 /* Piano8.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Piano8.mp3; sourceTree = "<group>"; };
 		C5CF7EC624B486E7005942E3 /* Piano12.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Piano12.mp3; sourceTree = "<group>"; };
-		C5CF7ED424B5C1EF005942E3 /* SOEffectWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SOEffectWrapper.swift; sourceTree = "<group>"; };
-		C5CF7ED524B5C1EF005942E3 /* SOSoundEffectModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SOSoundEffectModel.swift; sourceTree = "<group>"; };
-		C5CF7ED624B5C1EF005942E3 /* SOType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SOType.swift; sourceTree = "<group>"; };
 		E493A95FBB093D2EEFAF2E37 /* Pods-SoundSpectrumViewDemoTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SoundSpectrumViewDemoTests.release.xcconfig"; path = "Target Support Files/Pods-SoundSpectrumViewDemoTests/Pods-SoundSpectrumViewDemoTests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -3414,7 +3408,6 @@
 		C599F99F24AC384500159307 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				C5CF7ED324B5C1EF005942E3 /* ServerModel */,
 				C599F9A024AC388C00159307 /* PlaySoundViewModel.swift */,
 				C599F9A224AC705E00159307 /* SoundSpectrumViewModel.swift */,
 				C599F9A424AC82FA00159307 /* SoundEffectViewModel.swift */,
@@ -6690,16 +6683,6 @@
 			path = Headers;
 			sourceTree = "<group>";
 		};
-		C5CF7ED324B5C1EF005942E3 /* ServerModel */ = {
-			isa = PBXGroup;
-			children = (
-				C5CF7ED424B5C1EF005942E3 /* SOEffectWrapper.swift */,
-				C5CF7ED524B5C1EF005942E3 /* SOSoundEffectModel.swift */,
-				C5CF7ED624B5C1EF005942E3 /* SOType.swift */,
-			);
-			path = ServerModel;
-			sourceTree = "<group>";
-		};
 		E129AA9633136B0A66AB34CA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -6969,16 +6952,13 @@
 				C599F8DB24A9DC3E00159307 /* PlaySoundKeyboardItemView.swift in Sources */,
 				C599F8D324A9C21300159307 /* PlaySoundKeyboardView.swift in Sources */,
 				C554C25624A4650300323A8E /* SoundEffectView.swift in Sources */,
-				C5CF7ED924B5C1EF005942E3 /* SOType.swift in Sources */,
 				C599F9B124B3352900159307 /* RecordView.swift in Sources */,
 				C599F9AA24ADBC2E00159307 /* AEPlayerKit.swift in Sources */,
 				C59EEFFE249C71D7004833E4 /* ViewController.swift in Sources */,
 				C53797FD249CA67F00AE50E4 /* SoundWaveView.swift in Sources */,
 				C599F9A524AC82FA00159307 /* SoundEffectViewModel.swift in Sources */,
-				C5CF7ED824B5C1EF005942E3 /* SOSoundEffectModel.swift in Sources */,
 				C599F9AE24ADEBD400159307 /* KeyboardItemBgView.swift in Sources */,
 				C599F9BA24B4110000159307 /* RippleLayer.swift in Sources */,
-				C5CF7ED724B5C1EF005942E3 /* SOEffectWrapper.swift in Sources */,
 				C599F9BF24B4197E00159307 /* CircularProgressView.swift in Sources */,
 				C53797FB249CA60D00AE50E4 /* SoundSpectrumView.swift in Sources */,
 				C59EEFFA249C71D7004833E4 /* AppDelegate.swift in Sources */,

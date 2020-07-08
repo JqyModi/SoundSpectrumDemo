@@ -16,8 +16,21 @@ protocol PlaySoundKeyboardViewDelegate: class {
 
 class PlaySoundKeyboardView: UIView {
     
+    /// TapDown
     public class KeyboardTapGestureRecognizer: UITapGestureRecognizer {
         var itemIndex: Int = 0
+        
+        override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent) {
+            if self.state == .possible {
+                self.state = .recognized
+            }
+        }
+        override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent) {
+            self.state = .failed
+        }
+        override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent) {
+            self.state = .failed
+        }
     }
     
     public enum KBScrollDirection {
