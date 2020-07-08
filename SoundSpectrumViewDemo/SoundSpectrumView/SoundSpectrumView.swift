@@ -23,19 +23,19 @@ protocol SoundSpectrumViewDelegate: class {
 
 class SoundSpectrumView: UIView {
     
-    private var widthPerSecond: CGFloat = 30
-    private var audionDuration: TimeInterval = 33
-    private var cursorLeftOffset: CGFloat = 93.75
-    private var cursorColor: UIColor = .white
-    private var maxScrollWidth: CGFloat = 375
-    private var audioURL: URL?
+    public var widthPerSecond: CGFloat = 30
+    public var audionDuration: TimeInterval = 33
+    public var cursorLeftOffset: CGFloat = 93.75
+    public var cursorColor: UIColor = .white
+    public var maxScrollWidth: CGFloat = 375
+    public var audioURL: URL?
     
     public weak var delegate: SoundSpectrumViewDelegate?
     
     private var scrollView: UIScrollView!
     
-    private var chordPlayView: ChordPlayView!
-    private var effectView: SoundEffectView!
+    public var chordPlayView: ChordPlayView!
+    public var effectView: SoundEffectView!
     
     /// 标记是否绘制
     private var isDrawWave: Bool = false
@@ -43,20 +43,11 @@ class SoundSpectrumView: UIView {
     
     private var recordPlaySound: PlaySoundViewModel!
     
-    public var model: SoundSpectrumViewModel! {
-        didSet {
-            guard model != nil else {return}
-            self.configView(model: model)
-            self.reloadData()
-        }
-    }
+    private var subThread: DispatchQueue = DispatchQueue.init(label: "playSound")
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.initScrollView()
-        self.setupScrollView()
-        self.initViews()
-        self.initDatas()
     }
     
     required init?(coder: NSCoder) {
@@ -71,13 +62,14 @@ class SoundSpectrumView: UIView {
         self.scrollView.showsHorizontalScrollIndicator = false
     }
     
-    private func setupScrollView() {
+    public func setupScrollView() {
         let edgeOffset: CGFloat = cursorLeftOffset
         self.scrollView.contentInset = UIEdgeInsets(top: 0, left: edgeOffset, bottom: 0, right: self.bounds.width-edgeOffset)
         self.scrollView.delegate = self
+        self.scrollView.contentSize = CGSize(width: self.maxScrollWidth, height: self.bounds.height)
     }
     
-    private func initViews() {
+    public func initViews() {
         self.backgroundColor = .black
         // wavefrom
         self.initWaveView()
@@ -127,61 +119,6 @@ class SoundSpectrumView: UIView {
         self.addSubview(cursor)
     }
     
-    private func initDatas() {
-        guard model != nil else {return}
-        self.chordPlayView.drawLines(lineXs: model.playChordFrameXs)
-        self.effectView?.model = model.effectMarks
-    }
-    
-    public func configView(model: SoundSpectrumViewModel) {
-        self.widthPerSecond = model.widthPerSecond
-        self.audionDuration = model.duration
-        self.audioURL = model.audioURL
-        self.cursorColor = model.cursorColor
-        self.cursorLeftOffset = model.cursorLeftOffset
-        self.maxScrollWidth = model.maxScrollWidth
-    }
-    
-    public func reloadData() {
-        self.updateScrollContentSize()
-//        self.clearAllMarks()
-        self.reloadWave()
-        self.reloadChordPlay()
-        self.reloadEffect()
-    }
-    
-    private func updateScrollContentSize() {
-        DispatchQueue.main.async {
-            self.scrollView.contentSize = CGSize(width: self.maxScrollWidth, height: self.bounds.height)
-        }
-//        self.updateSubViewsHeight()
-    }
-    
-    private func updateSubViewsHeight() {
-        self.chordPlayView?.bounds = CGRect(x: 0, y: 0, width: self.maxScrollWidth, height: self.bounds.height)
-        self.effectView?.bounds = CGRect(x: 0, y: 0, width: self.maxScrollWidth, height: self.bounds.height)
-    }
-    
-    private func reloadWave() {
-        if !self.isDrawWave {
-            self.isDrawWave = true
-            self.initWaveView()
-        }
-    }
-    
-    private func reloadChordPlay() {
-        if !self.isDrawChordPlay {
-            self.isDrawChordPlay = true
-            self.chordPlayView.removeAllMark()
-            self.chordPlayView.drawLines(lineXs: model.playChordFrameXs)
-        }
-    }
-    
-    private func reloadEffect() {
-        self.effectView?.removeAllMark()
-        self.effectView?.model = model.effectMarks
-    }
-    
     /// 清空marks
     public func clearAllMarks() {
         for item in self.scrollView.subviews {
@@ -191,58 +128,18 @@ class SoundSpectrumView: UIView {
                 }
                 return
             }
-//            item.subviews.forEach { (subView) in
-//                subView.removeFromSuperview()
-//            }
-            model.playsounds = []
         }
     }
     
     public func updateProgress(second: Double) {
-        let cpro = second/self.audionDuration
-        let leftOffset = CGFloat(cpro)*self.maxScrollWidth
+        DispatchQueue.main.async {
+            let cpro = second/self.audionDuration
+            let leftOffset = CGFloat(cpro)*self.maxScrollWidth
 
-        if leftOffset.isEqual(to: 0) {
-            DispatchQueue.main.async {
+            if leftOffset.isEqual(to: 0) {
                 self.scrollView.contentOffset.x = -self.cursorLeftOffset
-            }
-        }else {
-//            DispatchQueue.main.async {
-//                UIView.animate(withDuration: 1, delay: 0, options: UIView.AnimationOptions.curveLinear, animations: {
-//                    self.scrollView.contentOffset.x = leftOffset-self.cursorLeftOffset
-//                }, completion: nil)
-//            }
-//            self.scrollView.contentOffset.x = leftOffset-self.cursorLeftOffset
-            DispatchQueue.main.async {
+            }else {
                 self.scrollView.setContentOffset(CGPoint(x: leftOffset-self.cursorLeftOffset, y: 0), animated: false)
-            }
-        }
-        
-        // 随机弹奏
-        self.playEffects(second: second)
-    }
-    
-    public func playEffects(second: Double) {
-        self.recordPlaySound = nil
-        let rangeOffset: Double = 0.01
-        let range = (second-rangeOffset...second+rangeOffset)
-        model.effectMarks.markViewModels.forEach { (markItem) in
-            if range.contains(markItem.timeOffset) {
-                
-                if self.recordPlaySound != nil, self.recordPlaySound.titleText.elementsEqual(markItem.playSoundVM.titleText) {
-                    print("相同对象只用一次")
-                    return
-                }
-                
-                DispatchQueue.global().async {
-                    guard let player = markItem.playSoundVM.module else {return}
-                    player.removeUponFinish = true
-                    AEPlayerKit.shared.play(player: player)
-                }
-                
-                self.recordPlaySound = markItem.playSoundVM
-                
-                return
             }
         }
     }
@@ -250,7 +147,6 @@ class SoundSpectrumView: UIView {
 extension SoundSpectrumView: UIScrollViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let ratio = Double((scrollView.contentOffset.x+self.cursorLeftOffset)/scrollView.contentSize.width)
-        print("ratio = \(ratio)")
         let timeOffset = ratio * self.audionDuration
         self.delegate?.soundSpectrumView(view: self, seekTo: timeOffset, isDraging: scrollView.isDragging)
     }

@@ -8,7 +8,6 @@
 
 import UIKit
 import TheAmazingAudioEngine
-import UICircularProgressRing
 
 public let SCREEN_WIDTH: CGFloat = UIScreen.main.bounds.width
 public let SCREEN_HEIGHT: CGFloat = UIScreen.main.bounds.height
@@ -35,8 +34,6 @@ extension Int {
 
 class ViewController: UIViewController {
     
-    private var timerBar: UICircularProgressRing!
-    
     private let soundSpectrumViewHeight: CGFloat = 120.ratioHeight
     private var navHeight: CGFloat = 64
     
@@ -57,14 +54,19 @@ class ViewController: UIViewController {
     private let recordViewHeight: CGFloat = 78.ratioHeight
     
     private var spectrumView: SoundSpectrumView?
+    private var keyboardView: PlaySoundKeyboardView?
     private var recordView: RecordView?
     
     private var timer: Timer?
+    
+    private var spectViewModel: SoundSpectrumViewModel!
+    private var keyboardViewModel: PlaySoundKeyboardViewModel!
     
     private var isOrgPlayer: Bool = false
     private var orgPlayer: AEAudioFilePlayer!
     
     private var orgDuration: CGFloat = 0
+    private var maxValue: CGFloat = 0
     
     private var progressValue: CGFloat = 0 {
         didSet {
@@ -78,6 +80,7 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         self.initParams()
         self.initViews()
+        self.initDatas()
     }
     
     private func updateTimerBar() {
@@ -98,45 +101,62 @@ class ViewController: UIViewController {
         
         let tSegmentHeight = self.segmentHeight + self.segmentControlHeight
         self.keyboardViewHeight = itemHeight*CGFloat(self.totalRow)+tVOffset+tSegmentHeight
+        
+        // 初始化录制按钮Duration
+        let url = Bundle.main.url(forResource: "rain_love.mp3", withExtension: nil)!
+        let module = try! AEAudioFilePlayer(url: url)
+        self.maxValue = CGFloat(module.regionDuration)
     }
 
     private func initViews() {
         self.view.backgroundColor = UIColor(red: 0.06, green: 0.05, blue: 0.1, alpha: 1)
         
+        self.initSoundSpectrumView()
+        
+        self.initPlaySoundKeyboardView()
+        
+        self.initRecordView()
+    }
+    
+    private func initSoundSpectrumView() {
         let sdFrame = CGRect(x: 0, y: self.navHeight, width: self.view.bounds.width, height: self.soundSpectrumViewHeight)
         let soundwave = SoundSpectrumView(frame: sdFrame)
         self.view.addSubview(soundwave)
         self.spectrumView = soundwave
-        
-        let ssvm = SoundSpectrumViewModel()
-        ssvm.configView(view: soundwave)
-        
         soundwave.delegate = self
-        
+    }
+    
+    private func initPlaySoundKeyboardView() {
         let kbFrame = CGRect(x: 0, y: self.navHeight+self.soundSpectrumViewHeight, width: self.view.bounds.width, height: self.keyboardViewHeight)
         let keyboardView = PlaySoundKeyboardView(frame: kbFrame)
         self.view.addSubview(keyboardView)
-        let kbvm = PlaySoundKeyboardViewModel()
-        kbvm.configView(view: keyboardView)
-        
+        self.keyboardView = keyboardView
         keyboardView.delegate = self
-        
-        self.initRecordView()
     }
     
     private func initRecordView() {
         let frame = CGRect(x: 0, y: self.navHeight+self.soundSpectrumViewHeight+self.keyboardViewHeight+20, width: view.bounds.width, height: self.recordViewHeight)
         
-        guard let player = self.spectrumView?.model.module else {return}
-        let recordView = RecordView(frame: frame, maxValue: CGFloat(player.regionDuration))
+        let recordView = RecordView(frame: frame, maxValue: self.maxValue)
         self.view.addSubview(recordView)
         
         self.recordView = recordView
         self.recordView?.delegate = self
     }
     
+    private func initDatas() {
+        let url = Bundle.main.url(forResource: "rain_love.mp3", withExtension: nil)!
+        let ssvm = SoundSpectrumViewModel(audioURL: url)
+        ssvm.configView(view: self.spectrumView!)
+        self.spectViewModel = ssvm
+        
+        let kbvm = PlaySoundKeyboardViewModel()
+        kbvm.configView(view: self.keyboardView!)
+        self.keyboardViewModel = kbvm
+    }
+    
     private func initPlayer() {
-        guard let player = self.spectrumView?.model.module else {return}
+        guard let player = self.spectViewModel.module else {return}
         self.orgDuration = CGFloat(player.regionDuration)
         player.removeUponFinish = false
         player.completionBlock = {
@@ -169,10 +189,11 @@ class ViewController: UIViewController {
         progressValue = CGFloat(self.orgPlayer.currentTime)
         print("progress: \(progressValue)")
         if progressValue == 0 {
-//            progressValue = 0
             self.initTimer()
         }
         self.spectrumView?.updateProgress(second: Double(self.progressValue))
+        // 播放命中音效
+        self.spectViewModel.playEffects(second: Double(self.progressValue))
     }
     
     private func pauseTimer() {
@@ -202,34 +223,31 @@ class ViewController: UIViewController {
         self.stopTimer()
         self.progressValue = 0
         self.spectrumView?.updateProgress(second: Double(self.progressValue))
-        spectrumView?.clearAllMarks()
+        self.spectrumView?.clearAllMarks()
+        // 清空模型数据
+        self.spectViewModel.resetEffectMarks()
+        self.spectViewModel.redrawEffectMarks(view: self.spectrumView!)
         self.recordView?.resetView()
     }
 }
 
 extension ViewController: PlaySoundKeyboardViewDelegate {
     func playSoundKeyboardView(view: PlaySoundKeyboardView, itemDidSelected index: Int) {
-        
-        if self.timer?.isValid ?? false {
-            DispatchQueue.global().async {
+        DispatchQueue.global().async {
+            if self.timer?.isValid ?? false {
                 guard let psvm = view.model.playsoundVms[index].copy() as? PlaySoundViewModel else {return}
                 psvm.userClickTimeOffset = Double(self.progressValue)
                 print("userClickTimeOffset = \(psvm.userClickTimeOffset)")
                 psvm.drawAnimate = true
-                guard var ems = self.spectrumView?.model.effectMarks.playSoundItems else {return}
-                ems.append(psvm)
-                let model = self.spectrumView?.model
-                model?.playsounds = ems
-                self.spectrumView?.model = model
+                self.spectViewModel.addEffectMark(psvm: psvm)
+                if let spectView = self.spectrumView {
+                    self.spectViewModel.redrawEffectMarks(view: spectView)
+                }
             }
-        }
-        
-        DispatchQueue.global().async {
             guard let module = view.model.playsoundVms[index].module else {return}
             module.removeUponFinish = true
             AEPlayerKit.shared.play(player: module)
         }
-        
     }
 }
 

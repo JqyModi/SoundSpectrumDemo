@@ -12,6 +12,7 @@ target 'SoundSpectrumViewDemo' do
   pod 'TheAmazingAudioEngine'
 #  pod 'MaterialDesignWidgets'
   pod 'UICircularProgressRing'
+#  pod "ObjectMapper"
 
   target 'SoundSpectrumViewDemoTests' do
     inherit! :search_paths

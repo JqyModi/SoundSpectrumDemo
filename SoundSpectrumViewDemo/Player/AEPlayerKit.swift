@@ -38,6 +38,12 @@ class AEPlayerKit: NSObject {
             return
         }
         self.audioController.addChannels([player])
+        
+        if let channels = self.audioController.channels(), channels.count > 90 {
+            self.audioController.removeChannels(channels.suffix(channels.count/3))
+            print("接近最大音频数移除前1/3")
+        }
+        
         print("channel Count = \(self.audioController.channels()?.count)")
     }
     

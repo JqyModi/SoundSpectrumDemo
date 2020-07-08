@@ -20,18 +20,7 @@ class SoundEffectView: UIView {
     private let darkpurple = UIColor(red: 66/255, green: 74/255, blue: 118/255, alpha: 1)
     private let darkred = UIColor(red: 128/255, green: 55/255, blue: 55/255, alpha: 1)
     
-    private var lineCount: CGFloat = 4
-    private var lineOffset: CGFloat = 8
-    private var markHeight: CGFloat = 8
     private let cpBackgroundColor: UIColor = .clear
-    
-    public var model: SoundEffectViewModel! {
-        didSet {
-            guard model != nil else {return}
-            self.lineCount = CGFloat(model.lineCount)
-            self.drawMarks()
-        }
-    }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -46,49 +35,7 @@ class SoundEffectView: UIView {
         self.backgroundColor = self.cpBackgroundColor
     }
     
-    private func drawMarks() {
-        let items = model.markViewModels
-        items.forEach { (mark) in
-            self.drawMark(markViewModel: mark, animate: false)
-            // 重置
-            self.resetDrawAnimate()
-        }
-    }
-    
-    private func resetDrawAnimate() {
-        let playItems = model.playSoundItems
-        playItems.forEach { (item) in
-            item.drawAnimate = false
-        }
-        model.setPlaySounds(playSounds: playItems)
-    }
-    
-    private func drawMark(frameX: CGFloat, frameWidth: CGFloat, lineIndex: Int, animate: Bool = false) {
-        guard let mark = Bundle.main.loadNibNamed(String(describing: EffectMarkItemView.classForCoder()), owner: nil, options: nil)?.last as? EffectMarkItemView else {return}
-        let tOffset = (self.lineCount-1)*self.lineOffset
-        let tHeight = self.lineCount*self.markHeight
-        let lineTopY = (self.bounds.height - (tOffset+tHeight))/2
-        let y = lineTopY+CGFloat(lineIndex)*(self.markHeight+self.lineOffset)
-        let frame = CGRect(x: frameX, y: y, width: frameWidth, height: markHeight)
-        mark.frame = frame
-        let colors = self.lineIndexToColors(lineIndex: lineIndex)
-        mark.setHeadColor(color: colors.head)
-        if animate {
-            mark.setTailColor(color: colors.head)
-        }else {
-            mark.setTailColor(color: colors.tail)
-        }
-        self.addSubview(mark)
-        
-        if animate {
-            UIView.animate(withDuration: 0.25) {
-                mark.setTailColor(color: colors.tail)
-            }
-        }
-        
-    }
-    
-    private func drawMark(markViewModel: EffectMarkItemViewModel, animate: Bool = false) {
+    public func drawMark(markViewModel: EffectMarkItemViewModel) {
         DispatchQueue.main.async {
             guard let mark = EffectMarkItemViewModel.createMarkView() else {return}
             mark.frame = markViewModel.markFrame()
